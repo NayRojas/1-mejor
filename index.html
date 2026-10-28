@@ -240,6 +240,14 @@
   .card h3{font-size:21px;line-height:1.3;margin:24px 0 10px}
   .card p{font-size:16.5px;line-height:1.55}
   .accept{margin-top:20px}
+  /* ===== Estela del 1% (mouse y clic) ===== */
+  .trail{position:fixed;left:0;top:0;z-index:40;pointer-events:none;white-space:nowrap;
+    font:700 13px "DM Sans",Inter,sans-serif;color:var(--accent);will-change:transform,opacity;
+    animation:trail .9s ease-out forwards}
+  .trail.burst{font-size:16px;animation-duration:1.1s}
+  @keyframes trail{
+    from{opacity:.9;transform:translate(var(--x),var(--y)) translate(-50%,-50%) scale(1)}
+    to{opacity:0;transform:translate(calc(var(--x) + var(--dx)),calc(var(--y) + var(--dy))) translate(-50%,-50%) scale(.6)}}
 </style>
 </head>
 <body data-tab="soft">
@@ -613,6 +621,34 @@ $("#prevWeek").onclick = () => { semana++; renderWeek(); };
 $("#nextWeek").onclick = () => { semana--; renderWeek(); };
 window.addEventListener("resize", movePill);
 document.fonts && document.fonts.ready.then(movePill);
+
+/* ---------- Estela del 1%: al mover el mouse y al hacer clic ---------- */
+if (!REDUCE) {
+  let lx = -99, ly = -99, alive = 0;
+  const spawn = (x, y, dx, dy, cls) => {
+    if (alive > 40) return;
+    const t = document.createElement("span");
+    t.className = "trail" + (cls ? " " + cls : "");
+    t.textContent = "1%"; t.setAttribute("aria-hidden", "true");
+    t.style.setProperty("--x", x + "px"); t.style.setProperty("--y", y + "px");
+    t.style.setProperty("--dx", dx + "px"); t.style.setProperty("--dy", dy + "px");
+    alive++;
+    t.addEventListener("animationend", () => { t.remove(); alive--; });
+    document.body.appendChild(t);
+  };
+  window.addEventListener("pointermove", e => {
+    if (e.pointerType !== "mouse") return;
+    if (Math.hypot(e.clientX - lx, e.clientY - ly) < 38) return;   // uno cada ~38 px
+    lx = e.clientX; ly = e.clientY;
+    spawn(lx, ly, (Math.random() - 0.5) * 20, 18 + Math.random() * 14);
+  }, { passive: true });
+  window.addEventListener("pointerdown", e => {
+    for (let i = 0; i < 8; i++) {
+      const a = (i / 8) * Math.PI * 2 + Math.random() * 0.4, d = 46 + Math.random() * 24;
+      spawn(e.clientX, e.clientY, Math.cos(a) * d, Math.sin(a) * d, "burst");
+    }
+  }, { passive: true });
+}
 
 magnetize([...document.querySelectorAll(".week button")]);
 renderWeek();
