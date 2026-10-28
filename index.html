@@ -215,6 +215,18 @@
     .hero h1 .w > span{transform:none}
     *,*::before{animation:none!important;transition:none!important;scroll-behavior:auto!important}
   }
+  /* ===== Versión compacta ===== */
+  .tabs{margin:14px 0 26px}
+  h2{font-size:clamp(28px,4.4vw,38px)}
+  .goto-reto{margin-top:6px}
+  .carousel{margin-top:22px}
+  .card{min-height:190px;padding:22px}
+  .num{font-size:38px}
+  .card h3{margin:20px 0 6px;font-size:17px}
+  .card p{font-size:14.5px}
+  .body{padding:26px}
+  .facts{margin:18px 0 22px}
+  .visual{min-height:170px}
 </style>
 </head>
 <body data-tab="soft">
@@ -241,16 +253,6 @@
     </header>
 
     <main>
-      <section class="hero">
-        <h1 aria-label="Una idea para crecer, cada semana.">
-          <span class="w" aria-hidden="true"><span style="--i:0">Una</span></span>
-          <span class="w" aria-hidden="true"><span style="--i:1">idea</span></span>
-          <span class="w" aria-hidden="true"><span style="--i:2">para</span></span>
-          <span class="w" aria-hidden="true"><span style="--i:3">crecer,</span></span><br>
-          <em><span class="w" aria-hidden="true"><span style="--i:4">cada</span></span>
-          <span class="w" aria-hidden="true"><span style="--i:5">semana.</span></span></em>
-        </h1>
-      </section>
 
       <div class="tabs" role="tablist" aria-label="Secciones">
         <span class="pill" aria-hidden="true"></span>
@@ -277,22 +279,21 @@ const SEMANAS = [
     soft: {
       categoria: "Comunicación",
       titulo: "Presenta para que te recuerden",
-      intro: "Una buena presentación no se trata de decirlo todo, sino de que tu audiencia se lleve una sola idea clara.",
       tips: [
-        { titulo: "Empieza por el final", texto: "Abre con la conclusión o lo que necesitas de tu audiencia. El contexto va después, y solo si hace falta." },
-        { titulo: "Una idea por slide", texto: "Si una diapositiva necesita dos títulos, en realidad son dos. Menos texto, más pausas." },
-        { titulo: "Habla en tres partes", texto: "Problema, propuesta, siguiente paso. Una estructura que cualquiera puede seguir y recordar." },
-        { titulo: "Ensaya en voz alta", texto: "Cronométrate una vez. Lo que en tu cabeza dura dos minutos suele durar cuatro cuando lo dices." }
+        { titulo: "Empieza por el final", texto: "Primero la conclusión. El contexto, después." },
+        { titulo: "Una idea por slide", texto: "Si necesita dos títulos, son dos slides." },
+        { titulo: "Problema, propuesta, siguiente paso", texto: "La estructura que todos recuerdan." },
+        { titulo: "Ensaya en voz alta", texto: "Lo que piensas en 2 minutos dura 4 al decirlo." }
       ],
-      reto: { titulo: "Conclusión primero", texto: "La próxima vez que expliques algo, dilo en una sola frase y luego pregunta si quieren el detalle." }
+      reto: { titulo: "Conclusión primero", texto: "Hoy, explica algo en una sola frase." }
     },
     tech: {
       etiqueta: "Ciberseguridad",
       glifo: "⬡",
-      titulo: "Criptografía post-cuántica: cifrado a prueba del futuro",
-      resumen: "Es una nueva generación de cifrado basada en estructuras matemáticas llamadas retículos, diseñada para resistir ataques de computadoras clásicas y cuánticas. El Foro Económico Mundial la incluyó entre las 10 tecnologías emergentes de 2026.",
-      porQue: "Una computadora cuántica podría romper el cifrado que usamos hoy. Por eso ya existe el riesgo de «guardar ahora, descifrar después»: datos robados hoy podrían leerse en unos años.",
-      empezar: "Revisa los estándares que publicó NIST (ML-KEM y ML-DSA) y pregúntate qué partes de tu sistema dependen de RSA o curvas elípticas.",
+      titulo: "Criptografía post-cuántica",
+      resumen: "Cifrado que resiste ataques de computadoras cuánticas. Top 10 tecnologías emergentes 2026 del Foro Económico Mundial.",
+      porQue: "Lo que se roba hoy podría descifrarse mañana.",
+      empezar: "Revisa qué partes de tu sistema usan RSA.",
       link: { texto: "Ver estándares de NIST", url: "https://csrc.nist.gov/projects/post-quantum-cryptography" }
     }
   },
@@ -302,22 +303,21 @@ const SEMANAS = [
     soft: {
       categoria: "Gestión del tiempo",
       titulo: "Protege tu tiempo de foco",
-      intro: "Ser productivo no es hacer más cosas, sino proteger el tiempo para las que de verdad importan.",
       tips: [
-        { titulo: "Bloquea antes de que te bloqueen", texto: "El lunes reserva dos bloques de 90 minutos en tu calendario para trabajo profundo." },
-        { titulo: "Agrupa lo pequeño", texto: "Responde mensajes en dos o tres ventanas al día, no en tiempo real." },
-        { titulo: "Define tu «una cosa»", texto: "Antes de abrir el correo, escribe la tarea que haría de hoy un buen día." },
-        { titulo: "Cierra el día en 5 minutos", texto: "Anota dónde quedaste y qué sigue. Mañana arrancas sin fricción." }
+        { titulo: "Bloquea tu foco", texto: "Reserva 2 bloques de 90 min cada lunes." },
+        { titulo: "Agrupa lo pequeño", texto: "Responde mensajes 2 o 3 veces al día." },
+        { titulo: "Define tu «una cosa»", texto: "¿Qué tarea haría de hoy un buen día?" },
+        { titulo: "Cierra en 5 minutos", texto: "Anota dónde quedaste y qué sigue." }
       ],
-      reto: { titulo: "Una hora sin notificaciones", texto: "Elige un bloque de 60 minutos esta semana, silencia todo y nota cuánto avanzas." }
+      reto: { titulo: "Una hora sin notificaciones", texto: "Silencia todo 60 minutos y mira cuánto avanzas." }
     },
     tech: {
       etiqueta: "Web",
       glifo: "◆",
-      titulo: "WebGPU: la GPU, directo en el navegador",
-      resumen: "WebGPU es la API moderna que da acceso a la tarjeta gráfica desde la web. Es la sucesora de WebGL y permite gráficos avanzados y cálculo en paralelo sin instalar nada.",
-      porQue: "Abre la puerta a correr modelos de IA, visualizaciones complejas y simulaciones directamente en el navegador.",
-      empezar: "Revisa la documentación de MDN y prueba alguno de los ejemplos oficiales en tu navegador.",
+      titulo: "WebGPU",
+      resumen: "La GPU directo en el navegador: gráficos avanzados e IA sin instalar nada.",
+      porQue: "Modelos de IA y visualizaciones corriendo en la web.",
+      empezar: "Prueba los ejemplos oficiales en tu navegador.",
       link: { texto: "Leer en MDN", url: "https://developer.mozilla.org/es/docs/Web/API/WebGPU_API" }
     }
   }
@@ -338,7 +338,6 @@ function retoAceptado(n) { try { return localStorage.getItem("pulso-reto-" + n) 
 
 /* ---------- Parallax: fondo + hero (scroll y puntero) ---------- */
 const shapes = [...document.querySelectorAll(".shape")];
-const hero = $(".hero");
 let mx = 0, my = 0, cx = 0, cy = 0;
 if (!REDUCE) {
   window.addEventListener("pointermove", e => {
@@ -352,8 +351,6 @@ if (!REDUCE) {
       const d = +s.dataset.depth;
       s.style.transform = `translate3d(${cx * 60 * d}px, ${cy * 60 * d - sy * d * 0.4}px, 0)`;
     });
-    hero.style.transform = `translate3d(0, ${sy * 0.25}px, 0)`;
-    hero.style.opacity = Math.max(0, 1 - sy / 380);
     requestAnimationFrame(loop);
   })();
 }
@@ -420,9 +417,8 @@ function renderSoft(s) {
     </article>`;
   panels.soft.innerHTML = `
     <div class="enter">
-      <span class="eyebrow">${d.categoria}</span>
+      <span class="eyebrow">${d.categoria} · 1 min</span>
       <h2>${d.titulo}</h2>
-      <p class="lead">${d.intro}</p>
       <button class="goto-reto">🎯 Ir al reto de la semana</button>
       <div class="carousel">
         <div class="track stagger" tabindex="0" aria-label="Consejos, usa las flechas para navegar">${cards}</div>
@@ -530,7 +526,7 @@ function renderTech(s) {
         <span class="glyph">${t.glifo || "✦"}</span>
       </div>
       <div class="body">
-        <span class="eyebrow">La noticia de la semana</span>
+        <span class="eyebrow">La noticia de la semana · 1 min</span>
         <h2>${t.titulo}</h2>
         <p class="lead">${t.resumen}</p>
         <div class="facts">
