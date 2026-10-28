@@ -1,0 +1,607 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>1% Mejor · cada semana</title>
+<meta name="description" content="Una idea de soft skills y una noticia tech, cada semana.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --bg:#f6f4ef; --surface:#ffffff; --surface-2:#efece5;
+    --text:#17161b; --muted:#6c6974; --line:rgba(23,22,27,.08);
+    --soft:#0e9f6e; --soft-2:#14b8a6;
+    --tech:#5b4cf0; --tech-2:#a07bff;
+    --soft-deep:#0b7d57; --soft-deep-2:#0d8f8a;
+    --tech-deep:#4335d4; --tech-deep-2:#7b4fe0;
+    --gold:#f5a524;
+    --shadow:0 1px 2px rgba(0,0,0,.04),0 18px 40px -18px rgba(30,25,60,.22);
+    --radius:26px;
+  }
+  @media (prefers-color-scheme: dark){
+    :root{
+      --bg:#0d0d11; --surface:#16161c; --surface-2:#1e1e26;
+      --text:#f3f2f6; --muted:#9b99a7; --line:rgba(255,255,255,.08);
+      --soft:#34d399; --soft-2:#2dd4bf;
+      --tech:#8b7dff; --tech-2:#c3a6ff;
+      --soft-deep:#0b7d57; --soft-deep-2:#0d8f8a;
+      --tech-deep:#4335d4; --tech-deep-2:#7b4fe0;
+      --gold:#ffc04d;
+      --shadow:0 1px 2px rgba(0,0,0,.3),0 24px 48px -20px rgba(0,0,0,.7);
+    }
+  }
+  body[data-tab="soft"]{--accent:var(--soft);--accent-2:var(--soft-2);--deep:var(--soft-deep);--deep-2:var(--soft-deep-2)}
+  body[data-tab="tech"]{--accent:var(--tech);--accent-2:var(--tech-2);--deep:var(--tech-deep);--deep-2:var(--tech-deep-2)}
+
+  *{box-sizing:border-box;margin:0;padding:0}
+  html{-webkit-text-size-adjust:100%}
+  body{
+    font-family:Inter,system-ui,-apple-system,sans-serif;
+    background:var(--bg); color:var(--text);
+    min-height:100vh; line-height:1.55; overflow-x:hidden;
+    -webkit-font-smoothing:antialiased;
+  }
+  body::before{ /* halo de color que cambia según la sección */
+    content:""; position:fixed; inset:-30vh -20vw auto; height:70vh; z-index:-1;
+    background:radial-gradient(closest-side,color-mix(in srgb,var(--accent) 22%,transparent),transparent);
+    transition:background .6s ease; pointer-events:none;
+  }
+  button{font:inherit;color:inherit;background:none;border:0;cursor:pointer}
+  a{color:inherit}
+  :focus-visible{outline:2px solid var(--accent);outline-offset:3px;border-radius:12px}
+
+  .wrap{max-width:980px;margin:0 auto;padding:0 16px}
+
+  /* Header */
+  .top{display:flex;align-items:center;justify-content:space-between;padding:22px 0}
+  .brand{display:flex;align-items:center;gap:10px;font-weight:600;letter-spacing:-.01em}
+  .brand-name{font-family:"Instrument Serif",serif;font-size:26px;font-weight:400;line-height:1;letter-spacing:-.02em}
+  .brand-name em{color:var(--accent);transition:color .6s}
+  .brand-tag{font-size:12px;font-weight:500;color:var(--muted);padding-left:10px;border-left:1px solid var(--line)}
+  @media (max-width:420px){.brand-tag{display:none}}
+  .logo{width:28px;height:28px;border-radius:50%;
+    background:conic-gradient(from 200deg,var(--accent),var(--accent-2),var(--accent));
+    transition:background .6s}
+  .week{display:flex;align-items:center;gap:4px;background:var(--surface);
+    border:1px solid var(--line);border-radius:999px;padding:4px;box-shadow:var(--shadow)}
+  .week button{width:32px;height:32px;border-radius:50%;display:grid;place-items:center;transition:background .2s}
+  .week button:hover:not(:disabled){background:var(--surface-2)}
+  .week button:disabled{opacity:.3;cursor:default}
+  .week-label{text-align:center;min-width:104px;line-height:1.15}
+  .week-label strong{display:block;font-size:13px;font-weight:600}
+  .week-label small{font-size:11px;color:var(--muted)}
+
+  /* Hero + tabs */
+  .hero{padding:28px 0 26px}
+  .hero h1{font-family:"Instrument Serif",serif;font-weight:400;
+    font-size:clamp(38px,7vw,64px);line-height:1.02;letter-spacing:-.02em}
+  .hero h1 em{color:var(--accent);transition:color .6s}
+
+  .tabs{position:relative;display:inline-flex;background:var(--surface-2);
+    border-radius:999px;padding:5px;margin-bottom:30px}
+  .tabs button{position:relative;z-index:1;padding:10px 22px;border-radius:999px;
+    font-size:14px;font-weight:500;color:var(--muted);transition:color .3s}
+  .tabs button[aria-selected="true"]{color:var(--text)}
+  .pill{position:absolute;top:5px;bottom:5px;left:0;border-radius:999px;
+    background:var(--surface);box-shadow:var(--shadow);
+    transition:transform .45s cubic-bezier(.2,.8,.2,1),width .45s cubic-bezier(.2,.8,.2,1)}
+
+  .enter{animation:enter .55s cubic-bezier(.2,.8,.2,1) both}
+  @keyframes enter{from{opacity:0;transform:translateY(14px)}to{opacity:1;transform:none}}
+
+  .eyebrow{display:inline-block;font-size:12px;font-weight:600;letter-spacing:.08em;
+    text-transform:uppercase;color:var(--accent);margin-bottom:10px;transition:color .6s}
+  h2{font-family:"Instrument Serif",serif;font-weight:400;
+    font-size:clamp(30px,5vw,42px);line-height:1.08;letter-spacing:-.015em;margin-bottom:12px}
+  .lead{color:var(--muted);font-size:16px;max-width:560px}
+
+  /* Carrusel soft skills */
+  .carousel{margin-top:28px}
+  .track{position:relative;display:flex;gap:16px;overflow-x:auto;
+    scroll-snap-type:x mandatory;scroll-behavior:smooth;
+    padding:6px 2px 26px;scrollbar-width:none}
+  .track::-webkit-scrollbar{display:none}
+  .card{flex:0 0 min(82%,300px);scroll-snap-align:start;
+    background:var(--surface);border:1px solid var(--line);border-radius:var(--radius);
+    padding:26px;min-height:270px;display:flex;flex-direction:column;
+    box-shadow:var(--shadow);transition:transform .35s cubic-bezier(.2,.8,.2,1)}
+  .num{font-family:"Instrument Serif",serif;font-size:46px;line-height:1;color:var(--accent);margin-bottom:auto}
+  .card h3{font-size:18px;font-weight:600;letter-spacing:-.01em;margin:28px 0 8px}
+  .card p{color:var(--muted);font-size:15px}
+  .card.reto{background:linear-gradient(145deg,var(--deep),var(--deep-2));color:#fff;border:0}
+  .card.reto p{color:rgba(255,255,255,.88)}
+  .badge{align-self:flex-start;margin-bottom:auto;font-size:12px;font-weight:600;
+    background:rgba(255,255,255,.2);padding:6px 12px;border-radius:999px;backdrop-filter:blur(6px)}
+
+  .controls{display:flex;align-items:center;gap:14px}
+  .controls .arrow{width:42px;height:42px;border-radius:50%;display:grid;place-items:center;
+    background:var(--surface);border:1px solid var(--line);transition:background .2s,opacity .2s}
+  .controls .arrow:hover:not(:disabled){background:var(--surface-2)}
+  .controls .arrow:disabled{opacity:.35;cursor:default}
+  .dots{display:flex;gap:6px;flex:1}
+  .dot{width:8px;height:8px;border-radius:999px;background:var(--line);
+    transition:width .35s cubic-bezier(.2,.8,.2,1),background .35s}
+  .dot.on{width:26px;background:var(--accent)}
+  .counter{font-size:13px;color:var(--muted);font-variant-numeric:tabular-nums}
+
+  /* Noticia tech */
+  .feature{display:grid;grid-template-columns:1fr;background:var(--surface);
+    border:1px solid var(--line);border-radius:var(--radius);overflow:hidden;box-shadow:var(--shadow)}
+  @media (min-width:760px){.feature{grid-template-columns:5fr 7fr}}
+  .visual{position:relative;min-height:200px;overflow:hidden;
+    background:linear-gradient(135deg,var(--deep),var(--deep-2))}
+  .orb{position:absolute;width:70%;aspect-ratio:1;border-radius:50%;filter:blur(30px);opacity:.75}
+  .orb.a{background:#fff;top:-20%;left:-15%;opacity:.35;animation:float 14s ease-in-out infinite}
+  .orb.b{background:var(--accent-2);bottom:-25%;right:-20%;animation:float 18s ease-in-out infinite reverse}
+  @keyframes float{50%{transform:translate(18%,12%) scale(1.1)}}
+  .visual .tag{position:absolute;top:18px;left:18px;font-size:12px;font-weight:600;color:#fff;
+    background:rgba(255,255,255,.2);padding:6px 12px;border-radius:999px;backdrop-filter:blur(6px)}
+  .visual .glyph{position:absolute;inset:0;display:grid;place-items:center;
+    font-family:"Instrument Serif",serif;font-size:96px;color:#fff;opacity:.95}
+  .body{padding:30px}
+  .facts{display:grid;gap:14px;margin:24px 0 26px}
+  @media (min-width:560px){.facts{grid-template-columns:1fr 1fr}}
+  .fact{background:var(--surface-2);border-radius:18px;padding:18px}
+  .fact h4{font-size:13px;font-weight:600;margin-bottom:6px}
+  .fact p{font-size:14px;color:var(--muted)}
+  .cta{display:inline-flex;align-items:center;gap:8px;text-decoration:none;font-weight:500;font-size:15px;
+    background:var(--text);color:var(--bg);padding:12px 20px;border-radius:999px;transition:transform .25s,gap .25s}
+  .cta:hover{transform:translateY(-2px);gap:12px}
+
+  footer{padding:48px 0 32px;font-size:13px;color:var(--muted);text-align:center}
+  footer .author{display:block;margin-top:6px}
+  footer .author strong{color:var(--text);font-weight:600}
+
+  /* ===== Parallax de fondo ===== */
+  .scene{position:fixed;inset:0;z-index:-1;pointer-events:none;overflow:hidden}
+  .shape{position:absolute;border-radius:50%;will-change:transform;transition:background .8s}
+  .shape.s1{width:340px;height:340px;top:6%;right:-90px;filter:blur(2px);
+    background:radial-gradient(circle at 30% 30%,var(--accent-2),var(--accent));opacity:.18}
+  .shape.s2{width:120px;height:120px;top:58%;left:-30px;
+    background:linear-gradient(135deg,var(--accent),var(--accent-2));opacity:.22}
+  .shape.s3{width:18px;height:18px;top:22%;left:46%;background:var(--accent);opacity:.6}
+  .shape.s4{width:10px;height:10px;top:70%;right:22%;background:var(--accent-2);opacity:.7}
+  .shape.ring{width:220px;height:220px;bottom:-60px;right:18%;background:none;
+    border:1px solid color-mix(in srgb,var(--accent) 35%,transparent)}
+
+  /* ===== Hero: palabras que aparecen ===== */
+  .hero h1 .w{display:inline-block;overflow:hidden;vertical-align:bottom}
+  .hero h1 .w > span{display:inline-block;transform:translateY(105%);
+    animation:rise .9s cubic-bezier(.2,.8,.2,1) forwards;animation-delay:calc(var(--i)*70ms + 100ms)}
+  @keyframes rise{to{transform:none}}
+  .hero{will-change:transform}
+
+  /* ===== Tarjetas 3D con brillo ===== */
+  .card{position:relative;transform-style:preserve-3d;
+    transform:perspective(900px) rotateX(var(--rx,0deg)) rotateY(var(--ry,0deg)) scale(var(--sc,1));
+    opacity:var(--op,1);transition:transform .25s ease-out,opacity .3s,box-shadow .3s}
+  .card::after{content:"";position:absolute;inset:0;border-radius:inherit;pointer-events:none;
+    background:radial-gradient(400px circle at var(--mx,50%) var(--my,50%),rgba(255,255,255,.18),transparent 45%);
+    opacity:0;transition:opacity .3s}
+  .card:hover::after{opacity:1}
+  .card .num{transform:translateX(var(--px,0px)) translateZ(30px);transition:transform .2s ease-out}
+  .card h3,.card p{transform:translateZ(18px)}
+  .stagger > *{animation:cardIn .7s cubic-bezier(.2,.8,.2,1) backwards;animation-delay:calc(var(--i)*90ms + 150ms)}
+  @keyframes cardIn{from{opacity:0;translate:40px 0}}
+
+  .accept{margin-top:18px;align-self:flex-start;background:#fff;color:#17161b;font-size:14px;font-weight:600;
+    padding:10px 16px;border-radius:999px;transform:translateZ(24px);transition:transform .2s}
+  .accept:active{transform:translateZ(24px) scale(.94)}
+  .accept.done{background:var(--gold);color:#2a1c00}
+
+  /* Botones magnéticos */
+  .magnetic{transition:transform .25s cubic-bezier(.2,.8,.2,1)}
+
+  /* Visual tech sigue al puntero */
+  .visual .glyph{transition:transform .3s ease-out;transform:translate(var(--gx,0px),var(--gy,0px))}
+  .visual .orb{translate:var(--ox,0px) var(--oy,0px);transition:translate .6s ease-out}
+
+  #confetti{position:fixed;inset:0;pointer-events:none;z-index:50}
+
+  .goto-reto{margin-top:18px;display:inline-flex;align-items:center;gap:6px;font-size:14px;font-weight:600;
+    color:var(--accent);background:color-mix(in srgb,var(--accent) 12%,transparent);
+    padding:9px 16px;border-radius:999px;transition:background .2s,transform .2s}
+  .goto-reto:hover{background:color-mix(in srgb,var(--accent) 20%,transparent)}
+  .goto-reto:active{transform:scale(.96)}
+  .card.pulse{animation:pulse .9s ease .35s}
+  @keyframes pulse{40%{box-shadow:0 0 0 10px color-mix(in srgb,var(--accent) 30%,transparent)}}
+  .accept{animation:breathe 2.4s ease-in-out infinite}
+  .accept.done{animation:none}
+  @keyframes breathe{50%{box-shadow:0 0 0 7px rgba(255,255,255,.28)}}
+
+  @media (prefers-reduced-motion:reduce){
+    .hero h1 .w > span{transform:none}
+    *,*::before{animation:none!important;transition:none!important;scroll-behavior:auto!important}
+  }
+</style>
+</head>
+<body data-tab="soft">
+  <div class="scene" aria-hidden="true">
+    <span class="shape s1" data-depth="0.35"></span>
+    <span class="shape s2" data-depth="0.7"></span>
+    <span class="shape s3" data-depth="1.2"></span>
+    <span class="shape s4" data-depth="1.6"></span>
+    <span class="shape ring" data-depth="0.5"></span>
+  </div>
+  <canvas id="confetti" aria-hidden="true"></canvas>
+  <div class="wrap">
+    <header class="top">
+      <div class="brand"><span class="logo" aria-hidden="true"></span><span class="brand-name">1% <em>Mejor</em></span><span class="brand-tag">cada semana</span></div>
+      <div class="week" aria-label="Cambiar de semana">
+        <button id="prevWeek" aria-label="Semana anterior">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M15 18l-6-6 6-6"/></svg>
+        </button>
+        <div class="week-label"><strong id="weekNum"></strong><small id="weekDates"></small></div>
+        <button id="nextWeek" aria-label="Semana siguiente">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M9 18l6-6-6-6"/></svg>
+        </button>
+      </div>
+    </header>
+
+    <main>
+      <section class="hero">
+        <h1 aria-label="Una idea para crecer, cada semana.">
+          <span class="w" aria-hidden="true"><span style="--i:0">Una</span></span>
+          <span class="w" aria-hidden="true"><span style="--i:1">idea</span></span>
+          <span class="w" aria-hidden="true"><span style="--i:2">para</span></span>
+          <span class="w" aria-hidden="true"><span style="--i:3">crecer,</span></span><br>
+          <em><span class="w" aria-hidden="true"><span style="--i:4">cada</span></span>
+          <span class="w" aria-hidden="true"><span style="--i:5">semana.</span></span></em>
+        </h1>
+      </section>
+
+      <div class="tabs" role="tablist" aria-label="Secciones">
+        <span class="pill" aria-hidden="true"></span>
+        <button role="tab" id="tab-soft" data-tab="soft" aria-controls="panel-soft" aria-selected="true">Soft skills</button>
+        <button role="tab" id="tab-tech" data-tab="tech" aria-controls="panel-tech" aria-selected="false">Tech</button>
+      </div>
+
+      <section id="panel-soft" role="tabpanel" aria-labelledby="tab-soft"></section>
+      <section id="panel-tech" role="tabpanel" aria-labelledby="tab-tech" hidden></section>
+    </main>
+
+    <footer>1% Mejor · cada semana<span class="author">Creado por <strong>Nay Rojas</strong></span></footer>
+  </div>
+
+<script>
+/* =========================================================
+   CONTENIDO — lo único que necesitas editar cada semana.
+   Agrega la semana nueva AL INICIO de la lista.
+   ========================================================= */
+const SEMANAS = [
+  {
+    numero: 43,
+    fechas: "20 – 24 oct",
+    soft: {
+      categoria: "Comunicación",
+      titulo: "Presenta para que te recuerden",
+      intro: "Una buena presentación no se trata de decirlo todo, sino de que tu audiencia se lleve una sola idea clara.",
+      tips: [
+        { titulo: "Empieza por el final", texto: "Abre con la conclusión o lo que necesitas de tu audiencia. El contexto va después, y solo si hace falta." },
+        { titulo: "Una idea por slide", texto: "Si una diapositiva necesita dos títulos, en realidad son dos. Menos texto, más pausas." },
+        { titulo: "Habla en tres partes", texto: "Problema, propuesta, siguiente paso. Una estructura que cualquiera puede seguir y recordar." },
+        { titulo: "Ensaya en voz alta", texto: "Cronométrate una vez. Lo que en tu cabeza dura dos minutos suele durar cuatro cuando lo dices." }
+      ],
+      reto: { titulo: "Conclusión primero", texto: "La próxima vez que expliques algo, dilo en una sola frase y luego pregunta si quieren el detalle." }
+    },
+    tech: {
+      etiqueta: "Ciberseguridad",
+      glifo: "⬡",
+      titulo: "Criptografía post-cuántica: cifrado a prueba del futuro",
+      resumen: "Es una nueva generación de cifrado basada en estructuras matemáticas llamadas retículos, diseñada para resistir ataques de computadoras clásicas y cuánticas. El Foro Económico Mundial la incluyó entre las 10 tecnologías emergentes de 2026.",
+      porQue: "Una computadora cuántica podría romper el cifrado que usamos hoy. Por eso ya existe el riesgo de «guardar ahora, descifrar después»: datos robados hoy podrían leerse en unos años.",
+      empezar: "Revisa los estándares que publicó NIST (ML-KEM y ML-DSA) y pregúntate qué partes de tu sistema dependen de RSA o curvas elípticas.",
+      link: { texto: "Ver estándares de NIST", url: "https://csrc.nist.gov/projects/post-quantum-cryptography" }
+    }
+  },
+  {
+    numero: 42,
+    fechas: "13 – 17 oct",
+    soft: {
+      categoria: "Gestión del tiempo",
+      titulo: "Protege tu tiempo de foco",
+      intro: "Ser productivo no es hacer más cosas, sino proteger el tiempo para las que de verdad importan.",
+      tips: [
+        { titulo: "Bloquea antes de que te bloqueen", texto: "El lunes reserva dos bloques de 90 minutos en tu calendario para trabajo profundo." },
+        { titulo: "Agrupa lo pequeño", texto: "Responde mensajes en dos o tres ventanas al día, no en tiempo real." },
+        { titulo: "Define tu «una cosa»", texto: "Antes de abrir el correo, escribe la tarea que haría de hoy un buen día." },
+        { titulo: "Cierra el día en 5 minutos", texto: "Anota dónde quedaste y qué sigue. Mañana arrancas sin fricción." }
+      ],
+      reto: { titulo: "Una hora sin notificaciones", texto: "Elige un bloque de 60 minutos esta semana, silencia todo y nota cuánto avanzas." }
+    },
+    tech: {
+      etiqueta: "Web",
+      glifo: "◆",
+      titulo: "WebGPU: la GPU, directo en el navegador",
+      resumen: "WebGPU es la API moderna que da acceso a la tarjeta gráfica desde la web. Es la sucesora de WebGL y permite gráficos avanzados y cálculo en paralelo sin instalar nada.",
+      porQue: "Abre la puerta a correr modelos de IA, visualizaciones complejas y simulaciones directamente en el navegador.",
+      empezar: "Revisa la documentación de MDN y prueba alguno de los ejemplos oficiales en tu navegador.",
+      link: { texto: "Leer en MDN", url: "https://developer.mozilla.org/es/docs/Web/API/WebGPU_API" }
+    }
+  }
+];
+
+/* ================= Lógica (no necesitas tocarla) ================= */
+const $ = s => document.querySelector(s);
+const panels = { soft: $("#panel-soft"), tech: $("#panel-tech") };
+const tabs = [...document.querySelectorAll('[role="tab"]')];
+const pill = $(".pill");
+let semana = 0;
+let tab = "soft";
+try { tab = localStorage.getItem("pulso-tab") || "soft"; } catch (e) {}
+
+const REDUCE = matchMedia("(prefers-reduced-motion: reduce)").matches;
+const FINE = matchMedia("(hover:hover)").matches;
+function retoAceptado(n) { try { return localStorage.getItem("pulso-reto-" + n) === "1"; } catch (e) { return false; } }
+
+/* ---------- Parallax: fondo + hero (scroll y puntero) ---------- */
+const shapes = [...document.querySelectorAll(".shape")];
+const hero = $(".hero");
+let mx = 0, my = 0, cx = 0, cy = 0;
+if (!REDUCE) {
+  window.addEventListener("pointermove", e => {
+    mx = e.clientX / innerWidth - 0.5;
+    my = e.clientY / innerHeight - 0.5;
+  });
+  (function loop() {
+    cx += (mx - cx) * 0.06; cy += (my - cy) * 0.06;       // suavizado
+    const sy = scrollY;
+    shapes.forEach(s => {
+      const d = +s.dataset.depth;
+      s.style.transform = `translate3d(${cx * 60 * d}px, ${cy * 60 * d - sy * d * 0.4}px, 0)`;
+    });
+    hero.style.transform = `translate3d(0, ${sy * 0.25}px, 0)`;
+    hero.style.opacity = Math.max(0, 1 - sy / 380);
+    requestAnimationFrame(loop);
+  })();
+}
+
+/* ---------- Botones magnéticos ---------- */
+function magnetize(els) {
+  if (REDUCE || !FINE) return;
+  els.forEach(el => {
+    el.classList.add("magnetic");
+    el.addEventListener("pointermove", e => {
+      const r = el.getBoundingClientRect();
+      el.style.transform = `translate(${(e.clientX - r.left - r.width / 2) * 0.3}px, ${(e.clientY - r.top - r.height / 2) * 0.3}px)`;
+    });
+    el.addEventListener("pointerleave", () => { el.style.transform = ""; });
+  });
+}
+
+/* ---------- Confeti ---------- */
+const cv = $("#confetti"), ctx = cv.getContext("2d");
+let bits = [], running = false;
+function confetti(x, y) {
+  // Se dispara siempre: es breve y lo inicia la persona (más suave si pidió reducir movimiento)
+  const total = REDUCE ? 50 : 140;
+  const dpr = devicePixelRatio || 1;
+  cv.width = innerWidth * dpr; cv.height = innerHeight * dpr;
+  cv.style.width = innerWidth + "px"; cv.style.height = innerHeight + "px";
+  ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+  const cs = getComputedStyle(document.body);
+  const colors = [cs.getPropertyValue("--accent"), cs.getPropertyValue("--accent-2"), cs.getPropertyValue("--gold"), cs.getPropertyValue("--gold"), "#ffffff", "#fde68a"];
+  for (let i = 0; i < total; i++) {
+    const a = Math.random() * Math.PI * 2, v = 4 + Math.random() * 9;
+    bits.push({ x, y, vx: Math.cos(a) * v, vy: Math.sin(a) * v - 6, r: Math.random() * 6,
+      w: 5 + Math.random() * 6, h: 3 + Math.random() * 4, vr: (Math.random() - 0.5) * 0.4,
+      c: colors[i % colors.length].trim(), life: 1 });
+  }
+  if (!running) { running = true; requestAnimationFrame(tick); }
+}
+function tick() {
+  ctx.clearRect(0, 0, innerWidth, innerHeight);
+  bits = bits.filter(b => b.life > 0 && b.y < innerHeight + 20);
+  bits.forEach(b => {
+    b.vy += 0.32; b.vx *= 0.985; b.x += b.vx; b.y += b.vy; b.r += b.vr; b.life -= 0.008;
+    ctx.save(); ctx.globalAlpha = Math.max(0, b.life); ctx.translate(b.x, b.y); ctx.rotate(b.r);
+    ctx.fillStyle = b.c; ctx.fillRect(-b.w / 2, -b.h / 2, b.w, b.h * Math.abs(Math.cos(b.r * 2)) + 1);
+    ctx.restore();
+  });
+  if (bits.length) requestAnimationFrame(tick); else { running = false; ctx.clearRect(0, 0, innerWidth, innerHeight); }
+}
+
+const arrow = d => `<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="${d}"/></svg>`;
+
+function renderSoft(s) {
+  const d = s.soft;
+  const aceptado = retoAceptado(s.numero);
+  const cards = d.tips.map((t, i) => `
+    <article class="card" style="--i:${i}">
+      <span class="num">${String(i + 1).padStart(2, "0")}</span>
+      <h3>${t.titulo}</h3><p>${t.texto}</p>
+    </article>`).join("") + `
+    <article class="card reto" style="--i:${d.tips.length}">
+      <span class="badge">Reto de la semana</span>
+      <h3>${d.reto.titulo}</h3><p>${d.reto.texto}</p>
+      <button class="accept${aceptado ? " done" : ""}" data-semana="${s.numero}">${aceptado ? "✓ Reto aceptado" : "Acepto el reto"}</button>
+    </article>`;
+  panels.soft.innerHTML = `
+    <div class="enter">
+      <span class="eyebrow">${d.categoria}</span>
+      <h2>${d.titulo}</h2>
+      <p class="lead">${d.intro}</p>
+      <button class="goto-reto">🎯 Ir al reto de la semana</button>
+      <div class="carousel">
+        <div class="track stagger" tabindex="0" aria-label="Consejos, usa las flechas para navegar">${cards}</div>
+        <div class="controls">
+          <button class="arrow" data-dir="-1" aria-label="Anterior">${arrow("M15 18l-6-6 6-6")}</button>
+          <button class="arrow" data-dir="1" aria-label="Siguiente">${arrow("M9 18l6-6-6-6")}</button>
+          <div class="dots"></div>
+          <span class="counter"></span>
+        </div>
+      </div>
+    </div>`;
+  setupCarousel();
+}
+
+function setupCarousel() {
+  const track = panels.soft.querySelector(".track");
+  const cards = [...track.children];
+  const dotsBox = panels.soft.querySelector(".dots");
+  const counter = panels.soft.querySelector(".counter");
+  const [prev, next] = panels.soft.querySelectorAll(".arrow");
+  dotsBox.innerHTML = cards.map(() => `<span class="dot"></span>`).join("");
+  const dots = [...dotsBox.children];
+  const pad = n => String(n).padStart(2, "0");
+
+  const current = () => {
+    if (track.scrollLeft >= track.scrollWidth - track.clientWidth - 4) return cards.length - 1;
+    let best = 0, dist = Infinity;
+    cards.forEach((c, i) => {
+      const d = Math.abs(c.offsetLeft - track.scrollLeft);
+      if (d < dist) { dist = d; best = i; }
+    });
+    return best;
+  };
+  const depth = () => { // parallax dentro del carrusel
+    if (REDUCE) return;
+    const w = track.clientWidth;
+    cards.forEach(c => {
+      const p = (c.offsetLeft - track.scrollLeft) / w;           // 0 = alineada a la izquierda
+      const off = Math.max(-1, Math.min(1.2, p));
+      c.style.setProperty("--px", `${off * -36}px`);
+      const fade = p < -0.15 ? Math.max(0.35, 1 + (p + 0.15) * 1.6) : 1;
+      c.style.setProperty("--op", fade.toFixed(3));
+      c.style.setProperty("--sc", (0.94 + 0.06 * fade).toFixed(3));
+    });
+  };
+  cards.forEach(c => { // inclinación 3D con brillo
+    if (REDUCE || !matchMedia("(hover:hover)").matches) return;
+    c.addEventListener("pointermove", e => {
+      const r = c.getBoundingClientRect();
+      const x = (e.clientX - r.left) / r.width, y = (e.clientY - r.top) / r.height;
+      c.style.setProperty("--ry", `${(x - 0.5) * 14}deg`);
+      c.style.setProperty("--rx", `${(0.5 - y) * 14}deg`);
+      c.style.setProperty("--mx", `${x * 100}%`);
+      c.style.setProperty("--my", `${y * 100}%`);
+    });
+    c.addEventListener("pointerleave", () => { c.style.setProperty("--rx", "0deg"); c.style.setProperty("--ry", "0deg"); });
+  });
+  const btn = panels.soft.querySelector(".accept");
+  btn.onclick = e => {
+    e.stopPropagation();
+    const r = btn.getBoundingClientRect();
+    confetti(r.left + r.width / 2, r.top + r.height / 2);
+    if (navigator.vibrate) navigator.vibrate(30);
+    btn.classList.add("done");
+    btn.textContent = "✓ Reto aceptado";
+    try { localStorage.setItem("pulso-reto-" + btn.dataset.semana, "1"); } catch (err) {}
+  };
+
+  const update = () => {
+    depth();
+    const i = current();
+    dots.forEach((d, k) => d.classList.toggle("on", k === i));
+    counter.textContent = `${pad(i + 1)} / ${pad(cards.length)}`;
+    prev.disabled = i === 0;
+    next.disabled = i === cards.length - 1;
+  };
+  const go = i => {
+    i = Math.max(0, Math.min(cards.length - 1, i));
+    track.scrollTo({ left: cards[i].offsetLeft });
+  };
+  let raf;
+  track.addEventListener("scroll", () => { cancelAnimationFrame(raf); raf = requestAnimationFrame(update); });
+  prev.onclick = () => go(current() - 1);
+  next.onclick = () => go(current() + 1);
+  track.addEventListener("keydown", e => {
+    if (e.key === "ArrowRight") { e.preventDefault(); go(current() + 1); }
+    if (e.key === "ArrowLeft") { e.preventDefault(); go(current() - 1); }
+  });
+  panels.soft.querySelector(".goto-reto").onclick = () => {
+    go(cards.length - 1);
+    const reto = cards[cards.length - 1];
+    reto.classList.remove("pulse"); void reto.offsetWidth; reto.classList.add("pulse");
+  };
+  magnetize([prev, next]);
+  update();
+}
+
+function renderTech(s) {
+  const t = s.tech;
+  panels.tech.innerHTML = `
+    <article class="feature enter">
+      <div class="visual" aria-hidden="true">
+        <span class="orb a"></span><span class="orb b"></span>
+        <span class="tag">${t.etiqueta}</span>
+        <span class="glyph">${t.glifo || "✦"}</span>
+      </div>
+      <div class="body">
+        <span class="eyebrow">La noticia de la semana</span>
+        <h2>${t.titulo}</h2>
+        <p class="lead">${t.resumen}</p>
+        <div class="facts">
+          <div class="fact"><h4>Por qué importa</h4><p>${t.porQue}</p></div>
+          <div class="fact"><h4>Para empezar</h4><p>${t.empezar}</p></div>
+        </div>
+        <a class="cta" href="${t.link.url}" target="_blank" rel="noopener">${t.link.texto} <span aria-hidden="true">→</span></a>
+      </div>
+    </article>`;
+  magnetize([panels.tech.querySelector(".cta")]);
+  const vis = panels.tech.querySelector(".visual");
+  if (!REDUCE && FINE) {
+    const feat = panels.tech.querySelector(".feature");
+    feat.addEventListener("pointermove", e => {
+      const r = vis.getBoundingClientRect();
+      const x = (e.clientX - r.left) / r.width - 0.5, y = (e.clientY - r.top) / r.height - 0.5;
+      vis.style.setProperty("--gx", `${x * 30}px`); vis.style.setProperty("--gy", `${y * 30}px`);
+      vis.style.setProperty("--ox", `${x * -50}px`); vis.style.setProperty("--oy", `${y * -50}px`);
+    });
+    feat.addEventListener("pointerleave", () => ["--gx", "--gy", "--ox", "--oy"].forEach(p => vis.style.setProperty(p, "0px")));
+  }
+}
+
+function renderWeek() {
+  const s = SEMANAS[semana];
+  $("#weekNum").textContent = `Semana ${s.numero}`;
+  $("#weekDates").textContent = s.fechas;
+  $("#prevWeek").disabled = semana === SEMANAS.length - 1;
+  $("#nextWeek").disabled = semana === 0;
+  renderSoft(s);
+  renderTech(s);
+}
+
+function movePill() {
+  const b = tabs.find(t => t.dataset.tab === tab);
+  pill.style.width = b.offsetWidth + "px";
+  pill.style.transform = `translateX(${b.offsetLeft}px)`;
+}
+
+function setTab(name, focus) {
+  tab = name;
+  document.body.dataset.tab = name;
+  tabs.forEach(b => {
+    const on = b.dataset.tab === name;
+    b.setAttribute("aria-selected", on);
+    b.tabIndex = on ? 0 : -1;
+    if (on && focus) b.focus();
+  });
+  Object.entries(panels).forEach(([k, p]) => {
+    p.hidden = k !== name;
+    const inner = p.firstElementChild;
+    if (k === name && inner) { inner.classList.remove("enter"); void inner.offsetWidth; inner.classList.add("enter"); }
+  });
+  movePill();
+  try { localStorage.setItem("pulso-tab", name); } catch (e) {}
+}
+
+tabs.forEach(b => {
+  b.onclick = () => setTab(b.dataset.tab);
+  b.onkeydown = e => {
+    if (e.key === "ArrowRight" || e.key === "ArrowLeft") setTab(tab === "soft" ? "tech" : "soft", true);
+  };
+});
+$("#prevWeek").onclick = () => { semana++; renderWeek(); };
+$("#nextWeek").onclick = () => { semana--; renderWeek(); };
+window.addEventListener("resize", movePill);
+document.fonts && document.fonts.ready.then(movePill);
+
+magnetize([...document.querySelectorAll(".week button")]);
+renderWeek();
+setTab(tab === "tech" ? "tech" : "soft");
+</script>
+</body>
+</html>
