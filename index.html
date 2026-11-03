@@ -3,6 +3,7 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
+<script>(()=>{let t;try{t=localStorage.getItem("pulso-theme")}catch(e){}document.documentElement.dataset.theme=t||(matchMedia("(prefers-color-scheme: dark)").matches?"dark":"light")})()</script>
 <title>1% Mejor · el tema de la semana</title>
 <meta name="description" content="Cada semana, un tema para crecer en 2 minutos: claves prácticas y un reto para aplicarlas.">
 <meta property="og:type" content="website">
@@ -25,10 +26,8 @@
     --head:"DM Sans",Inter,system-ui,sans-serif;
     --ease:cubic-bezier(.2,.8,.2,1);
   }
-  @media (prefers-color-scheme: dark){
-    :root{ --paper:#0c0f14; --ink:#eef1f5; --muted:#9aa3b2; --line:rgba(238,241,245,.12);
+  :root[data-theme="dark"]{ --paper:#0c0f14; --ink:#eef1f5; --muted:#9aa3b2; --line:rgba(238,241,245,.12);
       --accent:#8fb3ea; --accent-2:#6f97d6; --accent-tint:#18212f; }
-  }
   *{box-sizing:border-box;margin:0;padding:0}
   html{-webkit-text-size-adjust:100%}
   body{font-family:Inter,system-ui,sans-serif;background:var(--paper);color:var(--ink);overflow-x:hidden;-webkit-font-smoothing:antialiased;line-height:1.5}
@@ -38,7 +37,7 @@
   /* textura de grano sutil */
   body::after{content:"";position:fixed;inset:0;pointer-events:none;z-index:60;opacity:.06;mix-blend-mode:multiply;
     background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='160' height='160'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.9' numOctaves='2'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E")}
-  @media (prefers-color-scheme: dark){body::after{mix-blend-mode:screen;opacity:.05}}
+  [data-theme="dark"] body::after{mix-blend-mode:screen;opacity:.05}
 
   /* ===== Intro ===== */
   .loader{position:fixed;inset:0;z-index:80;background:var(--ink);color:var(--paper);display:grid;place-items:center;
@@ -142,7 +141,7 @@
     transition:transform .35s var(--ease),background .3s,color .3s;justify-self:start}
   .magnet:hover{background:var(--accent-2);color:#fff}
   .magnet.done{background:var(--accent);color:#fff}
-  @media (prefers-color-scheme: dark){.magnet.done,.magnet:hover{color:#0c0f14}}
+  [data-theme="dark"] .magnet.done,[data-theme="dark"] .magnet:hover{color:#0c0f14}
 
   /* ===== Tech ===== */
   .tech{padding-top:72px;padding-bottom:72px;display:grid;grid-template-columns:5fr 7fr;gap:5vw;border-bottom:1px solid var(--line)}
@@ -174,10 +173,38 @@
   .cur.lbl{mix-blend-mode:normal;background:var(--accent);width:96px;height:96px;margin:-48px 0 0 -48px}
   .cur.lbl span{opacity:1;transform:none}
   .cur.hide{width:0;height:0;margin:0}
-  @media (prefers-color-scheme: dark){.cur.lbl span{color:#0c0f14}}
+  [data-theme="dark"] .cur.lbl span{color:#0c0f14}
   @media (hover:none){.cur{display:none}}
 
   #confetti{position:fixed;inset:0;pointer-events:none;z-index:65}
+
+  /* Botón día/noche */
+  .tbtn{width:38px;height:38px;border:1px solid var(--line);border-radius:50%;background:var(--paper);display:grid;place-items:center;position:relative;overflow:hidden}
+  .tbtn svg{position:absolute;transition:transform .6s var(--ease),opacity .4s}
+  .tbtn .moon{transform:none;opacity:1}
+  .tbtn .sun{transform:translateY(130%) rotate(-90deg);opacity:0}
+  [data-theme="dark"] .tbtn .moon{transform:translateY(-130%) rotate(90deg);opacity:0}
+  [data-theme="dark"] .tbtn .sun{transform:none;opacity:1}
+
+  /* Cielo de transición */
+  .sky{position:fixed;inset:0;z-index:90;pointer-events:none;visibility:hidden;overflow:hidden}
+  .sky.run{visibility:visible;animation:sky 1.7s cubic-bezier(.6,0,.3,1) forwards}
+  .sky.dusk{background:linear-gradient(to top,#0c0f14 0%,#17223b 38%,#3a3f6b 62%,#c9786a 84%,#efb07d 100%)}
+  .sky.dawn{background:linear-gradient(to top,#f4f3ef 0%,#f7dcc0 34%,#ee9f7a 62%,#6d6f9c 84%,#1f2a45 100%)}
+  @keyframes sky{0%{transform:translateY(100%)}42%{transform:translateY(0)}62%{transform:translateY(0);opacity:1}100%{transform:translateY(0);opacity:0}}
+  .sky .orb{position:absolute;left:50%;top:50%;width:min(26vw,220px);aspect-ratio:1;margin-left:calc(min(26vw,220px) / -2);border-radius:50%}
+  .sky.dawn .orb{background:radial-gradient(circle,#fff6dc 0 40%,#ffd27a 62%,#f5a524 100%);box-shadow:0 0 120px 40px rgba(255,190,110,.55);
+    animation:rise 1.7s cubic-bezier(.3,.7,.3,1) forwards}
+  .sky.dusk .orb{background:#eef1f5;box-shadow:inset -34px -10px 0 0 #c9d3e3,0 0 90px 20px rgba(200,215,240,.28);
+    animation:rise 1.7s cubic-bezier(.3,.7,.3,1) forwards}
+  @keyframes rise{0%{transform:translateY(70vh) scale(.8)}55%{transform:translateY(-6vh) scale(1)}100%{transform:translateY(-14vh) scale(1)}}
+  .sky .stars{position:absolute;inset:0;opacity:0;background-image:
+    radial-gradient(1.5px 1.5px at 12% 18%,#fff,transparent),radial-gradient(1px 1px at 28% 32%,#fff,transparent),radial-gradient(1.5px 1.5px at 46% 12%,#fff,transparent),
+    radial-gradient(1px 1px at 64% 26%,#fff,transparent),radial-gradient(2px 2px at 78% 14%,#fff,transparent),radial-gradient(1px 1px at 88% 36%,#fff,transparent),
+    radial-gradient(1px 1px at 8% 44%,#fff,transparent),radial-gradient(1.5px 1.5px at 36% 52%,#fff,transparent),radial-gradient(1px 1px at 70% 48%,#fff,transparent),
+    radial-gradient(1.5px 1.5px at 92% 58%,#fff,transparent),radial-gradient(1px 1px at 20% 64%,#fff,transparent),radial-gradient(1px 1px at 56% 70%,#fff,transparent)}
+  .sky.dusk .stars{animation:stars 1.7s ease forwards}
+  @keyframes stars{0%,30%{opacity:0}55%{opacity:.9}100%{opacity:.9}}
 
   @media (prefers-reduced-motion:reduce){
     *{animation:none!important;transition:none!important}
@@ -191,10 +218,15 @@
   <div class="progress" aria-hidden="true"></div>
   <div class="cur" aria-hidden="true"><span></span></div>
   <canvas id="confetti" aria-hidden="true"></canvas>
+  <div class="sky" aria-hidden="true"><div class="stars"></div><div class="orb"></div></div>
 
   <header class="bar">
     <div class="brand">1% <span>Mejor</span></div>
     <div class="ctrl">
+      <button class="tbtn" id="themeBtn" type="button" aria-label="Cambiar a modo noche" title="Cambiar a modo noche">
+        <svg class="moon" width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12.8A9 9 0 1 1 11.2 3a7 7 0 0 0 9.8 9.8z"/></svg>
+        <svg class="sun" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M4.9 4.9l1.4 1.4M17.7 17.7l1.4 1.4M2 12h2M20 12h2M4.9 19.1l1.4-1.4M17.7 6.3l1.4-1.4"/></svg>
+      </button>
       <div class="pill lang" role="group" aria-label="Idioma / Language">
         <button type="button" data-lang="es" aria-pressed="true">ES</button>
         <button type="button" data-lang="en" aria-pressed="false">EN</button>
@@ -217,7 +249,8 @@ const FINE = matchMedia("(hover:hover)").matches;
 let semana = 0, lang = "es";
 try { if (localStorage.getItem("pulso-lang") === "en") lang = "en"; } catch (e) {}
 const view = s => (lang === "en" && s.en) ? { ...s, ...s.en } : s;
-const X = { es: { scroll: "Desliza", back: "Ver versión clásica", scrollK: "Desliza ↓", open: "Abrir →" }, en: { scroll: "Scroll", back: "See classic version", scrollK: "Scroll ↓", open: "Open →" } };
+const X = { es: { scroll: "Desliza", back: "Ver versión clásica", scrollK: "Desliza ↓", open: "Abrir →", toNight: "Cambiar a modo noche", toDay: "Cambiar a modo día" },
+            en: { scroll: "Scroll", back: "See classic version", scrollK: "Scroll ↓", open: "Open →", toNight: "Switch to night mode", toDay: "Switch to day mode" } };
 const retoAceptado = n => { try { return localStorage.getItem("pulso-reto-" + n) === "1"; } catch (e) { return false; } };
 const words = t => t.split(" ").map(w => `<span class="w"><span>${w}</span></span>`).join(" ");
 
@@ -317,6 +350,7 @@ addEventListener("resize", onScroll);
 /* Controles */
 document.querySelectorAll(".lang button").forEach(b => b.onclick = () => {
   lang = b.dataset.lang; try { localStorage.setItem("pulso-lang", lang); } catch (e) {}
+  labelTheme();
   document.body.classList.remove("ready"); render();
 });
 $("#prevWeek").onclick = () => { semana++; document.body.classList.remove("ready"); scrollTo(0, 0); render(); };
@@ -346,6 +380,30 @@ if (FINE && !REDUCE) {
   (function loop() { cx += (x - cx) * .18; cy += (y - cy) * .18; c.style.transform = `translate(${cx}px,${cy}px)`; requestAnimationFrame(loop); })();
 }
 
+/* Día / noche con transición de amanecer y anochecer */
+const themeBtn = $("#themeBtn"), sky = $(".sky");
+const theme = () => document.documentElement.dataset.theme;
+function labelTheme() {
+  const t = theme() === "dark" ? X[lang].toDay : X[lang].toNight;
+  themeBtn.setAttribute("aria-label", t); themeBtn.title = t;
+}
+let skyBusy = false;
+themeBtn.onclick = () => {
+  if (skyBusy) return;
+  const next = theme() === "dark" ? "light" : "dark";
+  const apply = () => { document.documentElement.dataset.theme = next; try { localStorage.setItem("pulso-theme", next); } catch (e) {} labelTheme(); };
+  if (REDUCE) { apply(); return; }
+  skyBusy = true;
+  sky.className = "sky " + (next === "dark" ? "dusk" : "dawn");
+  void sky.offsetWidth; sky.classList.add("run");
+  setTimeout(apply, 760);                       // cambia el tema cuando el cielo cubre la pantalla
+  setTimeout(() => { sky.className = "sky"; skyBusy = false; }, 1750);
+};
+matchMedia("(prefers-color-scheme: dark)").addEventListener("change", e => {
+  let saved = null; try { saved = localStorage.getItem("pulso-theme"); } catch (err) {}
+  if (!saved) { document.documentElement.dataset.theme = e.matches ? "dark" : "light"; labelTheme(); }
+});
+
 /* Confeti */
 const cv = $("#confetti"), ctx = cv.getContext("2d");
 let bits = [], running = false;
@@ -371,7 +429,7 @@ function tick() {
 }
 
 /* Arranque con intro */
-render();
+render(); labelTheme();
 const ld = $(".loader");
 if (REDUCE) ld.remove();
 else {
