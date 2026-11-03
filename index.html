@@ -164,10 +164,17 @@
   .rv{opacity:0;transform:translateY(30px);transition:opacity .8s,transform .9s var(--ease)}
   .rv.in{opacity:1;transform:none}
 
-  /* cursor propio */
-  .cur{position:fixed;left:0;top:0;width:38px;height:38px;margin:-19px 0 0 -19px;border:1.5px solid var(--accent);border-radius:50%;
-    pointer-events:none;z-index:75;transition:width .25s,height .25s,margin .25s,background .25s,opacity .3s;opacity:0;mix-blend-mode:normal}
-  .cur.big{width:74px;height:74px;margin:-37px 0 0 -37px;background:color-mix(in srgb,var(--accent) 14%,transparent)}
+  /* cursor: invierte colores y muestra texto según el contexto */
+  .cur{position:fixed;left:0;top:0;width:24px;height:24px;margin:-12px 0 0 -12px;border-radius:50%;background:#fff;
+    mix-blend-mode:difference;pointer-events:none;z-index:75;opacity:0;display:grid;place-items:center;overflow:hidden;
+    transition:width .4s var(--ease),height .4s var(--ease),margin .4s var(--ease),background .3s,opacity .3s}
+  .cur span{font:700 13px var(--head);letter-spacing:-.01em;white-space:nowrap;color:#fff;opacity:0;transform:scale(.6);transition:opacity .2s,transform .3s var(--ease)}
+  .cur.btn{width:46px;height:46px;margin:-23px 0 0 -23px}
+  .cur.inv{width:132px;height:132px;margin:-66px 0 0 -66px}
+  .cur.lbl{mix-blend-mode:normal;background:var(--accent);width:96px;height:96px;margin:-48px 0 0 -48px}
+  .cur.lbl span{opacity:1;transform:none}
+  .cur.hide{width:0;height:0;margin:0}
+  @media (prefers-color-scheme: dark){.cur.lbl span{color:#0c0f14}}
   @media (hover:none){.cur{display:none}}
 
   #confetti{position:fixed;inset:0;pointer-events:none;z-index:65}
@@ -182,7 +189,7 @@
 <body>
   <div class="loader" aria-hidden="true"><b>1%</b></div>
   <div class="progress" aria-hidden="true"></div>
-  <div class="cur" aria-hidden="true"></div>
+  <div class="cur" aria-hidden="true"><span></span></div>
   <canvas id="confetti" aria-hidden="true"></canvas>
 
   <header class="bar">
@@ -210,7 +217,7 @@ const FINE = matchMedia("(hover:hover)").matches;
 let semana = 0, lang = "es";
 try { if (localStorage.getItem("pulso-lang") === "en") lang = "en"; } catch (e) {}
 const view = s => (lang === "en" && s.en) ? { ...s, ...s.en } : s;
-const X = { es: { scroll: "Desliza", back: "Ver versión clásica" }, en: { scroll: "Scroll", back: "See classic version" } };
+const X = { es: { scroll: "Desliza", back: "Ver versión clásica", scrollK: "Desliza ↓", open: "Abrir →" }, en: { scroll: "Scroll", back: "See classic version", scrollK: "Scroll ↓", open: "Open →" } };
 const retoAceptado = n => { try { return localStorage.getItem("pulso-reto-" + n) === "1"; } catch (e) { return false; } };
 const words = t => t.split(" ").map(w => `<span class="w"><span>${w}</span></span>`).join(" ");
 
@@ -315,11 +322,28 @@ document.querySelectorAll(".lang button").forEach(b => b.onclick = () => {
 $("#prevWeek").onclick = () => { semana++; document.body.classList.remove("ready"); scrollTo(0, 0); render(); };
 $("#nextWeek").onclick = () => { semana--; document.body.classList.remove("ready"); scrollTo(0, 0); render(); };
 
-/* Cursor propio */
+/* Cursor: invierte los colores bajo él y muestra un texto corto donde ayuda */
 if (FINE && !REDUCE) {
-  const c = $(".cur"); let x = -100, y = -100, cx = x, cy = y;
-  addEventListener("pointermove", e => { x = e.clientX; y = e.clientY; c.style.opacity = 1; c.classList.toggle("big", !!e.target.closest("button,a")); }, { passive: true });
-  (function loop() { cx += (x - cx) * .2; cy += (y - cy) * .2; c.style.transform = `translate(${cx}px,${cy}px)`; requestAnimationFrame(loop); })();
+  const c = $(".cur"), label = c.querySelector("span");
+  let x = -200, y = -200, cx = x, cy = y, mode = "";
+  const decide = el => {
+    if (!el) return ["", ""];
+    if (el.closest(".magnet")) return ["hide", ""];
+    if (el.closest("a")) return ["lbl", X[lang].open];
+    if (el.closest("button")) return ["btn", ""];
+    if (innerWidth > 820 && el.closest(".k-left")) return ["lbl", X[lang].scrollK];
+    if (el.closest(".kin,.bgnum,.reto h2,.tech h3,.help p")) return ["inv", ""];
+    return ["", ""];
+  };
+  const update = el => {
+    const [m, t] = decide(el);
+    if (m !== mode) { c.classList.remove("btn", "inv", "lbl", "hide"); if (m) c.classList.add(m); mode = m; }
+    if (t && label.textContent !== t) label.textContent = t;
+  };
+  addEventListener("pointermove", e => { x = e.clientX; y = e.clientY; c.style.opacity = 1; update(e.target); }, { passive: true });
+  addEventListener("scroll", () => update(document.elementFromPoint(x, y)), { passive: true });
+  document.addEventListener("pointerleave", () => (c.style.opacity = 0));
+  (function loop() { cx += (x - cx) * .18; cy += (y - cy) * .18; c.style.transform = `translate(${cx}px,${cy}px)`; requestAnimationFrame(loop); })();
 }
 
 /* Confeti */
