@@ -57,6 +57,11 @@
   .brand-name span{color:var(--accent)}
   .brand-tag{font-size:13px;color:var(--muted);padding-left:10px;border-left:1px solid var(--line);white-space:nowrap}
   @media (max-width:560px){.brand-tag{display:none}}
+  .right{display:flex;align-items:center;gap:8px}
+  .lang{display:flex;background:var(--surface-2);border:1px solid var(--line);border-radius:999px;padding:3px}
+  .lang button{font-size:12.5px;font-weight:700;letter-spacing:.04em;padding:6px 10px;border-radius:999px;color:var(--muted);transition:background .2s,color .2s}
+  .lang button[aria-pressed="true"]{background:var(--surface);color:var(--accent);box-shadow:0 1px 2px rgba(16,24,40,.12)}
+  @media (max-width:520px){.top{flex-wrap:wrap;row-gap:12px}.right{width:100%;justify-content:space-between}}
   .week{display:flex;align-items:center;gap:2px;background:var(--surface);border:1px solid var(--line);
     border-radius:999px;padding:4px;box-shadow:var(--shadow)}
   .week button{width:32px;height:32px;border-radius:50%;display:grid;place-items:center;transition:background .2s}
@@ -159,7 +164,12 @@
 
   <div class="wrap">
     <header class="top">
-      <div class="brand"><span class="logo" aria-hidden="true"></span><span class="brand-name">1% <span>Mejor</span></span><span class="brand-tag">un tema para crecer, cada semana</span></div>
+      <div class="brand"><span class="logo" aria-hidden="true"></span><span class="brand-name">1% <span>Mejor</span></span><span class="brand-tag" id="brandTag">un tema para crecer, cada semana</span></div>
+      <div class="right">
+      <div class="lang" role="group" aria-label="Idioma / Language">
+        <button type="button" data-lang="es" aria-pressed="true" title="Español">ES</button>
+        <button type="button" data-lang="en" aria-pressed="false" title="English">EN</button>
+      </div>
       <nav class="week" aria-label="Cambiar de semana">
         <button id="prevWeek" aria-label="Semana anterior" title="Semana anterior">
           <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M15 18l-6-6 6-6"/></svg>
@@ -169,11 +179,12 @@
           <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M9 18l6-6-6-6"/></svg>
         </button>
       </nav>
+      </div>
     </header>
 
     <main id="main"></main>
 
-    <footer>1% Mejor · un tema para crecer, cada semana, en 2 minutos · Creado por <strong>Nay Rojas</strong></footer>
+    <footer><span id="footTxt">1% Mejor · un tema para crecer, cada semana, en 2 minutos · Creado por</span> <strong>Nay Rojas</strong></footer>
   </div>
 
 <script>
@@ -181,6 +192,7 @@
    CONTENIDO — lo único que necesitas editar cada semana.
    Agrega la semana nueva AL INICIO de la lista.
    "ayuda" = en una frase, qué gana el equipo con el tema.
+   "en" = la misma semana en inglés (opcional; si falta, se muestra en español).
    ========================================================= */
 const SEMANAS = [
   {
@@ -199,6 +211,23 @@ const SEMANAS = [
       ],
       fuente: "The Pyramid Principle, de Barbara Minto (McKinsey)",
       reto: { titulo: "Tu pedido en 3 partes", texto: "Antes de tu próximo refinamiento o comité, escribe tu pedido así: problema, impacto y qué necesitas." }
+    },
+    en: {
+      fechas: "Nov 02 – 06",
+      soft: {
+        categoria: "Communication",
+        titulo: "Present technical decisions the business understands",
+        ayuda: "Get your proposals approved without needing three meetings.",
+        tips: [
+          { titulo: "Tailor the message to your audience", texto: "The business wants impact and risk; your team wants the how. It's not the same presentation." },
+          { titulo: "Translate tech into impact", texto: "Instead of “refactor the service,” say “reduce payment outages.”" },
+          { titulo: "Show options, not just your solution", texto: "2 or 3 alternatives with their cost and risk, and the one you recommend." },
+          { titulo: "Close with a clear ask", texto: "What decision, budget, or support you need, and by when." },
+          { titulo: "Test it with someone from the business", texto: "If they don't get it in 2 minutes, simplify." }
+        ],
+        fuente: "The Pyramid Principle, by Barbara Minto (McKinsey)",
+        reto: { titulo: "Your ask in 3 parts", texto: "Before your next refinement or committee, write your ask as: problem, impact, and what you need." }
+      }
     }
   },
   {
@@ -223,6 +252,29 @@ const SEMANAS = [
       resumen: "Cifrado que resiste ataques de computadoras cuánticas. Top 10 tecnologías emergentes 2026 del Foro Económico Mundial.",
       porQue: "Lo que se roba hoy podría descifrarse mañana.",
       link: { texto: "Ver estándares de NIST", url: "https://csrc.nist.gov/projects/post-quantum-cryptography" }
+    },
+    en: {
+      fechas: "Oct 26 – 30",
+      soft: {
+        categoria: "Time management",
+        titulo: "Protect your focus time",
+        ayuda: "Move forward on what matters without constantly putting out fires.",
+        tips: [
+          { titulo: "Block your focus", texto: "Reserve two 90-minute blocks in your week." },
+          { titulo: "Plan your week", texto: "Block 1 hour on Monday to organize your week." },
+          { titulo: "Define your “one thing”", texto: "What task would make today a good day?" },
+          { titulo: "Close in 5 minutes", texto: "Write down where you left off and what's next." }
+        ],
+        fuente: "Deep Work, by Cal Newport",
+        reto: { titulo: "Your top 3 priorities", texto: "On Monday, write down the 3 things that would make your week a success." }
+      },
+      tech: {
+        etiqueta: "Cybersecurity",
+        titulo: "Post-quantum cryptography",
+        resumen: "Encryption that resists attacks from quantum computers. One of the World Economic Forum's Top 10 Emerging Technologies of 2026.",
+        porQue: "What's stolen today could be decrypted tomorrow.",
+        link: { texto: "See NIST standards", url: "https://csrc.nist.gov/projects/post-quantum-cryptography" }
+      }
     }
   }
 ];
@@ -231,11 +283,45 @@ const SEMANAS = [
 const $ = s => document.querySelector(s);
 const REDUCE = matchMedia("(prefers-reduced-motion: reduce)").matches;
 let semana = 0;
+const T = {
+  es: { tag: "un tema para crecer, cada semana", week: "Semana", now: "Tema de esta semana", past: "Tema de una semana anterior",
+        helps: "Te ayuda a", pastNote: "Estás viendo una semana anterior. Usa la flecha › para volver a la actual.",
+        keys: n => `${n} claves para aplicarlo`, read: "Lectura: 2 min", inspired: "Inspirado en:",
+        reto: "Reto de la semana", accept: "Acepto el reto", accepted: "✓ Reto aceptado",
+        quiz: "Repaso rápido · 1 pregunta", ok: "¡Correcto! ", no: "Casi. ",
+        tech: "Además, en tech", why: "Por qué nos importa:",
+        foot: "1% Mejor · un tema para crecer, cada semana, en 2 minutos · Creado por",
+        nav: "Cambiar de semana", prev: "Semana anterior", next: "Semana siguiente", title: "1% Mejor · el tema de la semana" },
+  en: { tag: "one topic to grow, every week", week: "Week", now: "This week's topic", past: "Topic from a past week",
+        helps: "Helps you", pastNote: "You're viewing a past week. Use the › arrow to go back to the current one.",
+        keys: n => `${n} keys to apply it`, read: "Read: 2 min", inspired: "Inspired by:",
+        reto: "Challenge of the week", accept: "I accept the challenge", accepted: "✓ Challenge accepted",
+        quiz: "Quick review · 1 question", ok: "Correct! ", no: "Not quite. ",
+        tech: "Also in tech", why: "Why it matters to us:",
+        foot: "1% Mejor · one topic to grow, every week, in 2 minutes · Created by",
+        nav: "Change week", prev: "Previous week", next: "Next week", title: "1% Mejor · this week's topic" }
+};
+let lang = "es";
+try { if (localStorage.getItem("pulso-lang") === "en") lang = "en"; } catch (e) {}
+const view = s => (lang === "en" && s.en) ? { ...s, ...s.en } : s;
+function setLang(l) {
+  lang = l;
+  try { localStorage.setItem("pulso-lang", l); } catch (e) {}
+  document.documentElement.lang = l;
+  document.querySelectorAll(".lang button").forEach(b => b.setAttribute("aria-pressed", b.dataset.lang === l));
+  const t = T[l];
+  document.title = t.title;
+  $("#brandTag").textContent = t.tag; $("#footTxt").textContent = t.foot;
+  $(".week").setAttribute("aria-label", t.nav);
+  for (const [id, k] of [["#prevWeek", "prev"], ["#nextWeek", "next"]]) { $(id).setAttribute("aria-label", t[k]); $(id).title = t[k]; }
+  render();
+}
+document.querySelectorAll(".lang button").forEach(b => b.onclick = () => setLang(b.dataset.lang));
 const retoAceptado = n => { try { return localStorage.getItem("pulso-reto-" + n) === "1"; } catch (e) { return false; } };
 
 function render() {
-  const s = SEMANAS[semana], d = s.soft, t = s.tech, ok = retoAceptado(s.numero);
-  $("#weekNum").textContent = `Semana ${s.numero}`;
+  const s = view(SEMANAS[semana]), d = s.soft, t = s.tech, ok = retoAceptado(s.numero), L = T[lang];
+  $("#weekNum").textContent = `${L.week} ${s.numero}`;
   $("#weekDates").textContent = s.fechas;
   $("#prevWeek").disabled = semana === SEMANAS.length - 1;
   $("#nextWeek").disabled = semana === 0;
@@ -243,33 +329,33 @@ function render() {
   $("#main").innerHTML = `
     <section class="hero">
       <div class="rise">
-        <span class="eyebrow">${semana === 0 ? "Tema de esta semana" : "Tema de una semana anterior"} · ${d.categoria}</span>
+        <span class="eyebrow">${semana === 0 ? L.now : L.past} · ${d.categoria}</span>
         <h1>${d.titulo}</h1>
         <div class="benefit">
           <span class="ico" aria-hidden="true"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12l5 5L20 7"/></svg></span>
-          <div><small>Te ayuda a</small><p>${d.ayuda || ""}</p></div>
+          <div><small>${L.helps}</small><p>${d.ayuda || ""}</p></div>
         </div>
-        <p class="past ${semana === 0 ? "" : "on"}">Estás viendo una semana anterior. Usa la flecha › para volver a la actual.</p>
+        <p class="past ${semana === 0 ? "" : "on"}">${L.pastNote}</p>
       </div>
       <div class="tips rise" style="animation-delay:.12s">
-        <div class="tips-head"><span>${d.tips.length} claves para aplicarlo</span><span>Lectura: 2 min</span></div>
+        <div class="tips-head"><span>${L.keys(d.tips.length)}</span><span>${L.read}</span></div>
         <ol>${d.tips.map((x, i) => `
           <li><span class="n">${i + 1}</span><div><h3>${x.titulo}</h3><p>${x.texto}</p></div></li>`).join("")}
         </ol>
-        ${d.fuente ? `<div class="source">Inspirado en: <b>${d.fuente}</b></div>` : ""}
+        ${d.fuente ? `<div class="source">${L.inspired} <b>${d.fuente}</b></div>` : ""}
       </div>
     </section>
 
     <div class="reto rise" style="animation-delay:.2s">
       <div class="txt">
         <span class="big" aria-hidden="true"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="12" cy="12" r="9"/><circle cx="12" cy="12" r="5"/><circle cx="12" cy="12" r="1"/></svg></span>
-        <div><small>Reto de la semana</small><h3>${d.reto.titulo}</h3><p>${d.reto.texto}</p></div>
+        <div><small>${L.reto}</small><h3>${d.reto.titulo}</h3><p>${d.reto.texto}</p></div>
       </div>
-      <button class="accept${ok ? " done" : ""}">${ok ? "✓ Reto aceptado" : "Acepto el reto"}</button>
+      <button class="accept${ok ? " done" : ""}">${ok ? L.accepted : L.accept}</button>
     </div>
 
     ${s.repaso ? `<div class="quiz rise" style="animation-delay:.24s">
-      <small>Repaso rápido · 1 pregunta</small>
+      <small>${L.quiz}</small>
       <h3>${s.repaso.pregunta}</h3>
       <div class="opts">${s.repaso.opciones.map((o, i) => `<button class="opt" type="button" data-i="${i}">${o}</button>`).join("")}</div>
       <p class="fb" aria-live="polite"></p>
@@ -278,10 +364,10 @@ function render() {
     ${t ? `<div class="tech rise" style="animation-delay:.28s">
       <span class="ico" aria-hidden="true"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="4" y="4" width="16" height="16" rx="3"/><path d="M9 9h6v6H9z"/><path d="M9 1v3M15 1v3M9 20v3M15 20v3M20 9h3M20 14h3M1 9h3M1 14h3"/></svg></span>
       <div class="txt">
-        <small>Además, en tech · ${t.etiqueta}</small>
+        <small>${L.tech} · ${t.etiqueta}</small>
         <h3>${t.titulo}</h3>
         <p>${t.resumen}</p>
-        ${t.porQue ? `<p class="why"><b>Por qué nos importa:</b> ${t.porQue}</p>` : ""}
+        ${t.porQue ? `<p class="why"><b>${L.why}</b> ${t.porQue}</p>` : ""}
       </div>
       <a class="cta" href="${t.link.url}" target="_blank" rel="noopener">${t.link.texto} <span aria-hidden="true">→</span></a>
     </div>` : ""}`;
@@ -289,7 +375,7 @@ function render() {
   document.querySelectorAll(".opt").forEach(o => o.onclick = () => {
     const i = +o.dataset.i, rp = s.repaso, fb = $(".quiz .fb");
     document.querySelectorAll(".opt").forEach(x => { x.disabled = true; if (+x.dataset.i === rp.correcta) x.classList.add("ok"); else if (x === o) x.classList.add("no"); });
-    fb.textContent = (i === rp.correcta ? "¡Correcto! " : "Casi. ") + rp.explica;
+    fb.textContent = (i === rp.correcta ? L.ok : L.no) + rp.explica;
     fb.classList.add("on");
   });
   const btn = $(".accept");
@@ -297,7 +383,7 @@ function render() {
     const r = btn.getBoundingClientRect();
     confetti(r.left + r.width / 2, r.top + r.height / 2);
     if (navigator.vibrate) navigator.vibrate(30);
-    btn.classList.add("done"); btn.textContent = "✓ Reto aceptado";
+    btn.classList.add("done"); btn.textContent = L.accepted;
     try { localStorage.setItem("pulso-reto-" + s.numero, "1"); } catch (e) {}
   };
 }
@@ -358,7 +444,7 @@ if (!REDUCE) {
   }, { passive: true });
 }
 
-render();
+setLang(lang);
 </script>
 </body>
 </html>
