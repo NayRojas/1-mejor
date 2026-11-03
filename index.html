@@ -186,25 +186,19 @@
   [data-theme="dark"] .tbtn .moon{transform:translateY(-130%) rotate(90deg);opacity:0}
   [data-theme="dark"] .tbtn .sun{transform:none;opacity:1}
 
-  /* Cielo de transición */
-  .sky{position:fixed;inset:0;z-index:90;pointer-events:none;visibility:hidden;overflow:hidden}
-  .sky.run{visibility:visible;animation:sky 1.7s cubic-bezier(.6,0,.3,1) forwards}
-  .sky.dusk{background:linear-gradient(to top,#0c0f14 0%,#17223b 38%,#3a3f6b 62%,#c9786a 84%,#efb07d 100%)}
-  .sky.dawn{background:linear-gradient(to top,#f4f3ef 0%,#f7dcc0 34%,#ee9f7a 62%,#6d6f9c 84%,#1f2a45 100%)}
-  @keyframes sky{0%{transform:translateY(100%)}42%{transform:translateY(0)}62%{transform:translateY(0);opacity:1}100%{transform:translateY(0);opacity:0}}
-  .sky .orb{position:absolute;left:50%;top:50%;width:min(26vw,220px);aspect-ratio:1;margin-left:calc(min(26vw,220px) / -2);border-radius:50%}
-  .sky.dawn .orb{background:radial-gradient(circle,#fff6dc 0 40%,#ffd27a 62%,#f5a524 100%);box-shadow:0 0 120px 40px rgba(255,190,110,.55);
-    animation:rise 1.7s cubic-bezier(.3,.7,.3,1) forwards}
-  .sky.dusk .orb{background:#eef1f5;box-shadow:inset -34px -10px 0 0 #c9d3e3,0 0 90px 20px rgba(200,215,240,.28);
-    animation:rise 1.7s cubic-bezier(.3,.7,.3,1) forwards}
-  @keyframes rise{0%{transform:translateY(70vh) scale(.8)}55%{transform:translateY(-6vh) scale(1)}100%{transform:translateY(-14vh) scale(1)}}
-  .sky .stars{position:absolute;inset:0;opacity:0;background-image:
-    radial-gradient(1.5px 1.5px at 12% 18%,#fff,transparent),radial-gradient(1px 1px at 28% 32%,#fff,transparent),radial-gradient(1.5px 1.5px at 46% 12%,#fff,transparent),
-    radial-gradient(1px 1px at 64% 26%,#fff,transparent),radial-gradient(2px 2px at 78% 14%,#fff,transparent),radial-gradient(1px 1px at 88% 36%,#fff,transparent),
-    radial-gradient(1px 1px at 8% 44%,#fff,transparent),radial-gradient(1.5px 1.5px at 36% 52%,#fff,transparent),radial-gradient(1px 1px at 70% 48%,#fff,transparent),
-    radial-gradient(1.5px 1.5px at 92% 58%,#fff,transparent),radial-gradient(1px 1px at 20% 64%,#fff,transparent),radial-gradient(1px 1px at 56% 70%,#fff,transparent)}
-  .sky.dusk .stars{animation:stars 1.7s ease forwards}
-  @keyframes stars{0%,30%{opacity:0}55%{opacity:.9}100%{opacity:.9}}
+  /* Cambio de tema suave: la luz sube (amanecer) o baja (anochecer) */
+  ::view-transition-old(root),::view-transition-new(root){animation:none;mix-blend-mode:normal}
+  html.vt-dawn::view-transition-new(root),html.vt-dusk::view-transition-new(root){
+    -webkit-mask-size:100% 300%;mask-size:100% 300%;-webkit-mask-repeat:no-repeat;mask-repeat:no-repeat;
+    animation:light 1.4s cubic-bezier(.45,0,.25,1) forwards}
+  html.vt-dawn::view-transition-new(root){-webkit-mask-image:linear-gradient(to top,#000 40%,transparent 60%);mask-image:linear-gradient(to top,#000 40%,transparent 60%)}
+  html.vt-dusk::view-transition-new(root){-webkit-mask-image:linear-gradient(to bottom,#000 40%,transparent 60%);mask-image:linear-gradient(to bottom,#000 40%,transparent 60%)}
+  @keyframes light{from{-webkit-mask-position:0 0%;mask-position:0 0%}to{-webkit-mask-position:0 100%;mask-position:0 100%}}
+  html.vt-dusk::view-transition-new(root){animation-name:lightdown}
+  @keyframes lightdown{from{-webkit-mask-position:0 100%;mask-position:0 100%}to{-webkit-mask-position:0 0%;mask-position:0 0%}}
+  /* Navegadores sin View Transitions: fundido suave de colores */
+  html.theming *,html.theming *::before,html.theming *::after{transition:background-color 1.2s ease,color 1.2s ease,border-color 1.2s ease,fill 1.2s ease!important}
+
 
   @media (prefers-reduced-motion:reduce){
     *{animation:none!important;transition:none!important}
@@ -218,7 +212,6 @@
   <div class="progress" aria-hidden="true"></div>
   <div class="cur" aria-hidden="true"><span></span></div>
   <canvas id="confetti" aria-hidden="true"></canvas>
-  <div class="sky" aria-hidden="true"><div class="stars"></div><div class="orb"></div></div>
 
   <header class="bar">
     <div class="brand">1% <span>Mejor</span></div>
@@ -381,23 +374,24 @@ if (FINE && !REDUCE) {
 }
 
 /* Día / noche con transición de amanecer y anochecer */
-const themeBtn = $("#themeBtn"), sky = $(".sky");
+const themeBtn = $("#themeBtn");
 const theme = () => document.documentElement.dataset.theme;
 function labelTheme() {
   const t = theme() === "dark" ? X[lang].toDay : X[lang].toNight;
   themeBtn.setAttribute("aria-label", t); themeBtn.title = t;
 }
-let skyBusy = false;
 themeBtn.onclick = () => {
-  if (skyBusy) return;
-  const next = theme() === "dark" ? "light" : "dark";
-  const apply = () => { document.documentElement.dataset.theme = next; try { localStorage.setItem("pulso-theme", next); } catch (e) {} labelTheme(); };
-  if (REDUCE) { apply(); return; }
-  skyBusy = true;
-  sky.className = "sky " + (next === "dark" ? "dusk" : "dawn");
-  void sky.offsetWidth; sky.classList.add("run");
-  setTimeout(apply, 760);                       // cambia el tema cuando el cielo cubre la pantalla
-  setTimeout(() => { sky.className = "sky"; skyBusy = false; }, 1750);
+  const root = document.documentElement, next = theme() === "dark" ? "light" : "dark";
+  const apply = () => { root.dataset.theme = next; try { localStorage.setItem("pulso-theme", next); } catch (e) {} labelTheme(); };
+  if (REDUCE) return apply();
+  if (document.startViewTransition) {
+    const cls = next === "dark" ? "vt-dusk" : "vt-dawn";
+    root.classList.add(cls);
+    document.startViewTransition(apply).finished.finally(() => root.classList.remove(cls));
+  } else {
+    root.classList.add("theming"); apply();
+    setTimeout(() => root.classList.remove("theming"), 1300);
+  }
 };
 matchMedia("(prefers-color-scheme: dark)").addEventListener("change", e => {
   let saved = null; try { saved = localStorage.getItem("pulso-theme"); } catch (err) {}
