@@ -61,13 +61,6 @@ const SEMANAS = [
       fuente: "Deep Work, de Cal Newport",
       reto: { titulo: "Tus 3 prioridades", texto: "El lunes, escribe las 3 cosas que harían de tu semana un éxito." }
     },
-    tech: {
-      etiqueta: "Ciberseguridad",
-      titulo: "Criptografía post-cuántica",
-      resumen: "Cifrado que resiste ataques de computadoras cuánticas. Top 10 tecnologías emergentes 2026 del Foro Económico Mundial.",
-      porQue: "Lo que se roba hoy podría descifrarse mañana.",
-      link: { texto: "Ver estándares de NIST", url: "https://csrc.nist.gov/projects/post-quantum-cryptography" }
-    },
     en: {
       fechas: "Oct 26 – 30",
       soft: {
@@ -82,13 +75,6 @@ const SEMANAS = [
         ],
         fuente: "Deep Work, by Cal Newport",
         reto: { titulo: "Your top 3 priorities", texto: "On Monday, write down the 3 things that would make your week a success." }
-      },
-      tech: {
-        etiqueta: "Cybersecurity",
-        titulo: "Post-quantum cryptography",
-        resumen: "Encryption that resists attacks from quantum computers. One of the World Economic Forum's Top 10 Emerging Technologies of 2026.",
-        porQue: "What's stolen today could be decrypted tomorrow.",
-        link: { texto: "See NIST standards", url: "https://csrc.nist.gov/projects/post-quantum-cryptography" }
       }
     }
   }
