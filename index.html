@@ -144,6 +144,10 @@
   .reto small{font-size:13px;font-weight:700;letter-spacing:.12em;text-transform:uppercase;opacity:.7}
   .reto h2{font-family:var(--head);font-weight:800;font-size:clamp(40px,7vw,104px);line-height:.98;letter-spacing:-.045em;margin:14px 0 20px}
   .reto p{font-size:clamp(17px,1.7vw,22px);opacity:.8;max-width:40ch}
+  .agenda{display:inline-flex;align-items:center;gap:9px;margin-top:26px;padding:11px 18px;border-radius:999px;text-decoration:none;
+    font-size:14.5px;font-weight:600;color:var(--paper);border:1px solid color-mix(in srgb,var(--paper) 32%,transparent);transition:background .25s,border-color .25s,color .25s}
+  .agenda:hover{background:var(--accent);border-color:var(--accent);color:#fff}
+  [data-theme="dark"] .agenda:hover{color:#0c0f14}
   /* Mini checklist de ejemplo junto al texto del reto */
   .reto-body{display:flex;flex-wrap:wrap;align-items:center;gap:22px 34px}
   .mini{list-style:none;flex:0 0 auto;width:min(100%,290px);border:1px solid color-mix(in srgb,var(--paper) 20%,transparent);
@@ -277,9 +281,25 @@ const FINE = matchMedia("(hover:hover)").matches;
 let semana = 0, lang = "es";
 try { if (localStorage.getItem("pulso-lang") === "en") lang = "en"; } catch (e) {}
 const view = s => (lang === "en" && s.en) ? { ...s, ...s.en } : s;
-const X = { es: { scroll: "Desliza", back: "Ver versión clásica", scrollK: "Desliza ↓", open: "Abrir →", toNight: "Cambiar a modo noche", toDay: "Cambiar a modo día" },
-            en: { scroll: "Scroll", back: "See classic version", scrollK: "Scroll ↓", open: "Open →", toNight: "Switch to night mode", toDay: "Switch to day mode" } };
+const X = { es: { scroll: "Desliza", back: "Ver versión clásica", scrollK: "Desliza ↓", open: "Abrir →", toNight: "Cambiar a modo noche", toDay: "Cambiar a modo día", agenda: "Bloquea 15 min en Teams", agendaTip: "Abre Teams con un bloque de 15 minutos listo para guardar" },
+            en: { scroll: "Scroll", back: "See classic version", scrollK: "Scroll ↓", open: "Open →", toNight: "Switch to night mode", toDay: "Switch to day mode", agenda: "Block 15 min in Teams", agendaTip: "Opens Teams with a 15-minute block ready to save" } };
 const retoAceptado = n => { try { return localStorage.getItem("pulso-reto-" + n) === "1"; } catch (e) { return false; } };
+/* Enlace que abre Teams con una reunión de 15 min lista para guardar (bloque personal, sin invitados).
+   Horario: el siguiente día hábil a las 9:00, hora de Lima (UTC-5, sin horario de verano). */
+function teamsLink(reto) {
+  const lima = new Date(Date.now() - 5 * 3600e3);             // hora local de Lima en campos UTC
+  const d = new Date(Date.UTC(lima.getUTCFullYear(), lima.getUTCMonth(), lima.getUTCDate()));
+  const hoyHabil = d.getUTCDay() % 6 !== 0 && lima.getUTCHours() * 60 + lima.getUTCMinutes() < 8 * 60 + 45;
+  if (!hoyHabil) do { d.setUTCDate(d.getUTCDate() + 1); } while (d.getUTCDay() % 6 === 0);
+  const f = d.toISOString().slice(0, 10);
+  const q = [
+    ["subject", "🎯 1% Mejor · " + reto.titulo],
+    ["startTime", `${f}T09:00:00-05:00`],
+    ["endTime", `${f}T09:15:00-05:00`],
+    ["content", reto.texto + "\n\nhttps://nayrojas.github.io/1-mejor/"]
+  ].map(([k, v]) => k + "=" + encodeURIComponent(v)).join("&");
+  return "https://teams.microsoft.com/l/meeting/new?" + q;
+}
 const words = t => t.split(" ").map(w => `<span class="w"><span>${w}</span></span>`).join(" ");
 
 function render() {
@@ -331,6 +351,10 @@ function render() {
               <span class="t">${x.texto}</span><span class="f">${x.fecha}</span>
             </li>`).join("")}</ul>` : ""}
         </div>
+        <a class="agenda" href="${teamsLink(d.reto)}" target="_blank" rel="noopener" title="${X[lang].agendaTip}">
+          <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="4" width="18" height="17" rx="2"/><path d="M8 2v4M16 2v4M3 10h18M12 14v4M10 16h4"/></svg>
+          ${X[lang].agenda}
+        </a>
       </div>
       <button class="magnet${ok ? " done" : ""}" type="button">${ok ? L.accepted : L.accept}</button>
     </section>
@@ -345,6 +369,7 @@ function render() {
 
   // Botón del reto
   document.querySelectorAll("#main a.cta").forEach(a => a.addEventListener("click", () => track("abrir_enlace")));
+  document.querySelectorAll("#main a.agenda").forEach(a => a.addEventListener("click", () => track("agendar_teams")));
   const btn = $(".magnet");
   btn.onclick = () => {
     track("reto_aceptado");
