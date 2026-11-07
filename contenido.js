@@ -11,6 +11,41 @@
    ========================================================= */
 const SEMANAS = [
   {
+    numero: 46,
+    fechas: "09 – 13 nov",
+    soft: {
+      categoria: "Gestión de prioridades",
+      titulo: "Prioriza cuando todo parece urgente",
+      ayuda: "Avanzar en lo que más importa aunque tengas varios frentes abiertos.",
+      tips: [
+        { titulo: "Separa lo urgente de lo importante", texto: "Antes de reaccionar, pregúntate si es importante o solo urgente. Lo urgente grita; lo importante, casi nunca." },
+        { titulo: "Limita lo que tienes en curso", texto: "Máximo 2 o 3 tareas abiertas a la vez. Termina antes de empezar otra." },
+        { titulo: "Cuida el costo de cambiar de tarea", texto: "Según Gerald Weinberg, sumar un segundo proyecto te quita cerca del 20% del tiempo. Agrupa reuniones y mensajes." },
+        { titulo: "Turna las interrupciones", texto: "Una persona atiende urgencias e incidentes por día o semana; el resto protege su foco." },
+        { titulo: "Haz visible un solo orden", texto: "Una lista ordenada que todos conozcan. Si entra algo nuevo, pregunta: ¿qué bajamos?" }
+      ],
+      fuente: "Matriz de Eisenhower, Kanban (límites WIP), Gerald Weinberg y Google SRE",
+      reto: { titulo: "Haz visibles tus frentes", texto: "Lista todos los frentes que tienes abiertos con su fecha de entrega y ordénalos para decidir dónde poner tu esfuerzo." }
+    },
+    en: {
+      fechas: "Nov 09 – 13",
+      soft: {
+        categoria: "Priority management",
+        titulo: "Prioritize when everything seems urgent",
+        ayuda: "Move forward on what matters most, even with several fronts open.",
+        tips: [
+          { titulo: "Separate urgent from important", texto: "Before reacting, ask whether it's important or just urgent. Urgent shouts; important rarely does." },
+          { titulo: "Limit your work in progress", texto: "2 or 3 open tasks at most. Finish before starting another." },
+          { titulo: "Mind the cost of switching", texto: "According to Gerald Weinberg, adding a second project costs you about 20% of your time. Batch meetings and messages." },
+          { titulo: "Rotate interruptions", texto: "One person handles urgent issues and incidents per day or week; the rest protect their focus." },
+          { titulo: "Make a single order visible", texto: "One ranked list everyone knows. If something new comes in, ask: what moves down?" }
+        ],
+        fuente: "Eisenhower Matrix, Kanban (WIP limits), Gerald Weinberg and Google SRE",
+        reto: { titulo: "Make your fronts visible", texto: "List every front you have open with its due date, and rank them to decide where to put your effort." }
+      }
+    }
+  },
+  {
     numero: 45,
     fechas: "02 – 06 nov",
     soft: {
