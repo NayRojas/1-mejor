@@ -8,8 +8,6 @@
    - "tips" = máximo 5 claves.
    - "tech" es opcional: si no hay noticia, omite el bloque.
    - "en" es opcional: la misma semana en inglés.
-   - "destacar" es opcional: la palabra del título que se subraya al
-     cargar. Si falta, se subraya la última palabra.
    - "color" es opcional: el color de la semana, uno para modo
      claro y otro para modo oscuro. Si falta, se usa el verde.
    ========================================================= */
@@ -21,7 +19,6 @@ const SEMANAS = [
     soft: {
       categoria: "Gestión de prioridades",
       titulo: "Prioriza cuando todo parece urgente",
-      destacar: "urgente",
       ayuda: "Avanzar en lo que más importa aunque tengas varios frentes abiertos.",
       tips: [
         { titulo: "Separa lo urgente de lo importante", texto: "Antes de reaccionar, pregúntate si es importante o solo urgente. Lo urgente grita; lo importante, casi nunca." },
@@ -38,7 +35,6 @@ const SEMANAS = [
       soft: {
         categoria: "Priority management",
         titulo: "Prioritize when everything seems urgent",
-        destacar: "urgent",
         ayuda: "Move forward on what matters most, even with several fronts open.",
         tips: [
           { titulo: "Separate urgent from important", texto: "Before reacting, ask whether it's important or just urgent. Urgent shouts; important rarely does." },
@@ -58,7 +54,6 @@ const SEMANAS = [
     soft: {
       categoria: "Comunicación",
       titulo: "Presenta decisiones técnicas que negocio entienda",
-      destacar: "negocio",
       ayuda: "Que aprueben tus propuestas sin necesitar tres reuniones.",
       tips: [
         { titulo: "Ajusta el mensaje a tu audiencia", texto: "Negocio quiere impacto y riesgo; tu equipo, el cómo. No es la misma presentación." },
@@ -75,7 +70,6 @@ const SEMANAS = [
       soft: {
         categoria: "Communication",
         titulo: "Present technical decisions the business understands",
-        destacar: "business",
         ayuda: "Get your proposals approved without needing three meetings.",
         tips: [
           { titulo: "Tailor the message to your audience", texto: "The business wants impact and risk; your team wants the how. It's not the same presentation." },
@@ -95,7 +89,6 @@ const SEMANAS = [
     soft: {
       categoria: "Gestión del tiempo",
       titulo: "Protege tu tiempo de foco",
-      destacar: "foco",
       ayuda: "Avanzar en lo importante sin vivir apagando incendios.",
       tips: [
         { titulo: "Bloquea tu foco", texto: "Reserva 2 bloques de 90 min en tu semana." },
@@ -111,7 +104,6 @@ const SEMANAS = [
       soft: {
         categoria: "Time management",
         titulo: "Protect your focus time",
-        destacar: "focus",
         ayuda: "Move forward on what matters without constantly putting out fires.",
         tips: [
           { titulo: "Block your focus", texto: "Reserve two 90-minute blocks in your week." },
