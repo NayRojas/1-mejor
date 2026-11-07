@@ -443,7 +443,18 @@ if (FINE && !REDUCE) {
   addEventListener("pointermove", e => { x = e.clientX; y = e.clientY; c.style.opacity = 1; update(e.target); }, { passive: true });
   addEventListener("scroll", () => update(document.elementFromPoint(x, y)), { passive: true });
   document.addEventListener("pointerleave", () => (c.style.opacity = 0));
-  (function loop() { cx += (x - cx) * .18; cy += (y - cy) * .18; c.style.transform = `translate(${cx}px,${cy}px)`; requestAnimationFrame(loop); })();
+  // Cursor elástico: se estira en la dirección del movimiento y vuelve a ser redondo al frenar
+  let st = 0, ang = 0;
+  (function loop() {
+    const dx = x - cx, dy = y - cy;
+    cx += dx * .18; cy += dy * .18;
+    const vel = Math.hypot(dx, dy);
+    const objetivo = (mode === "lbl" || mode === "hide") ? 0 : Math.min(vel / 160, .55);
+    st += (objetivo - st) * .2;
+    if (vel > 1.5) ang = Math.atan2(dy, dx) * 180 / Math.PI;
+    c.style.transform = `translate(${cx}px,${cy}px) rotate(${ang}deg) scale(${1 + st},${1 - st * .45})`;
+    requestAnimationFrame(loop);
+  })();
 }
 
 /* Día / noche con transición de amanecer y anochecer */
