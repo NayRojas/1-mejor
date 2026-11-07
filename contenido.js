@@ -8,11 +8,14 @@
    - "tips" = máximo 5 claves.
    - "tech" es opcional: si no hay noticia, omite el bloque.
    - "en" es opcional: la misma semana en inglés.
+   - "color" es opcional: el color de la semana, uno para modo
+     claro y otro para modo oscuro. Si falta, se usa el verde.
    ========================================================= */
 const SEMANAS = [
   {
     numero: 46,
     fechas: "09 – 13 nov",
+    color: { claro: "#b45309", oscuro: "#fbbf24" },   // ámbar: atención, decide
     soft: {
       categoria: "Gestión de prioridades",
       titulo: "Prioriza cuando todo parece urgente",

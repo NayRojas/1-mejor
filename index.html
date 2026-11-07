@@ -22,12 +22,12 @@
 <style>
   :root{
     --paper:#f4f3ef; --ink:#0e1420; --muted:#5d6472; --line:rgba(14,20,32,.12);
-    --accent:#087a4d; --accent-2:#10b07a; --accent-tint:#e3f3ea;
+    --accent:var(--wk-claro,#087a4d); --accent-2:color-mix(in srgb,var(--accent) 70%,#fff); --accent-tint:color-mix(in srgb,var(--accent) 12%,var(--paper));
     --head:"DM Sans",Inter,system-ui,sans-serif;
     --ease:cubic-bezier(.2,.8,.2,1);
   }
   :root[data-theme="dark"]{ --paper:#0c0f14; --ink:#eef1f5; --muted:#9aa3b2; --line:rgba(238,241,245,.12);
-      --accent:#34d399; --accent-2:#10b981; --accent-tint:#10261d; }
+      --accent:var(--wk-oscuro,#34d399); --accent-2:color-mix(in srgb,var(--accent) 75%,#000); --accent-tint:color-mix(in srgb,var(--accent) 14%,var(--paper)); }
   *{box-sizing:border-box;margin:0;padding:0}
   html{-webkit-text-size-adjust:100%}
   body{font-family:Inter,system-ui,sans-serif;background:var(--paper);color:var(--ink);overflow-x:hidden;-webkit-font-smoothing:antialiased;line-height:1.5}
@@ -249,6 +249,9 @@ const words = t => t.split(" ").map(w => `<span class="w"><span>${w}</span></spa
 
 function render() {
   const s = view(SEMANAS[semana]), d = s.soft, t = s.tech, L = T[lang], ok = retoAceptado(s.numero);
+  const rs = document.documentElement.style, col = SEMANAS[semana].color;
+  if (col && col.claro) rs.setProperty("--wk-claro", col.claro); else rs.removeProperty("--wk-claro");
+  if (col && col.oscuro) rs.setProperty("--wk-oscuro", col.oscuro); else rs.removeProperty("--wk-oscuro");
   document.documentElement.lang = lang; document.title = L.title;
   $("#weekNum").innerHTML = `${L.week} ${s.numero}<span class="wkd"> · ${s.fechas}</span>`;
   $("#prevWeek").disabled = semana === SEMANAS.length - 1;
@@ -406,7 +409,7 @@ function confetti(x, y) {
   cv.width = innerWidth * dpr; cv.height = innerHeight * dpr; cv.style.width = innerWidth + "px"; cv.style.height = innerHeight + "px";
   ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
   const cs = getComputedStyle(document.documentElement);
-  const colors = ["--accent", "--accent-2", "--paper"].map(v => cs.getPropertyValue(v).trim()).concat(["#bfe8d3"]);
+  const colors = ["--accent", "--accent", "--ink"].map(v => cs.getPropertyValue(v).trim()).concat(["#d6d3cc"]);
   for (let i = 0, n = REDUCE ? 50 : 150; i < n; i++) {
     const a = Math.random() * Math.PI * 2, v = 4 + Math.random() * 10;
     bits.push({ x, y, vx: Math.cos(a) * v, vy: Math.sin(a) * v - 6, r: Math.random() * 6, w: 5 + Math.random() * 7, h: 3 + Math.random() * 4, vr: (Math.random() - .5) * .4, c: colors[i % colors.length], life: 1 });

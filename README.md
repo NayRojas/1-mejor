@@ -15,6 +15,7 @@ Edita **solo `contenido.js`**. Las dos versiones de la página leen ese archivo.
    - `soft`: `categoria`, `titulo` (el tema), `ayuda` (en qué ayuda, en una frase), `tips` (máximo 5), `fuente` y `reto`
    - `repaso` (opcional): una pregunta sobre la semana anterior, con sus `opciones`, la `correcta` (0 = la primera) y una `explica`. Solo se muestra en la versión clásica.
    - `tech` (opcional): `etiqueta`, `titulo`, `resumen`, `porQue` (por qué nos importa) y `link`. Si no hay noticia, omite el bloque.
+   - `color` (opcional): el color de la semana en la página principal, con `claro` y `oscuro`, por ejemplo `{ claro: "#b45309", oscuro: "#fbbf24" }`. Si falta, se usa el verde.
    - `en` (opcional): la misma semana en inglés, con `fechas`, `soft` y `tech` traducidos. Si falta, el botón EN muestra esa semana en español.
 3. Haz commit. GitHub Pages publica los cambios en uno o dos minutos.
 
