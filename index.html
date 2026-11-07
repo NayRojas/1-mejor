@@ -281,8 +281,8 @@ const FINE = matchMedia("(hover:hover)").matches;
 let semana = 0, lang = "es";
 try { if (localStorage.getItem("pulso-lang") === "en") lang = "en"; } catch (e) {}
 const view = s => (lang === "en" && s.en) ? { ...s, ...s.en } : s;
-const X = { es: { scroll: "Desliza", back: "Ver versión clásica", scrollK: "Desliza ↓", open: "Abrir →", toNight: "Cambiar a modo noche", toDay: "Cambiar a modo día", agenda: "Bloquea 15 min en Teams", agendaTip: "Abre Teams con un bloque de 15 minutos listo para guardar" },
-            en: { scroll: "Scroll", back: "See classic version", scrollK: "Scroll ↓", open: "Open →", toNight: "Switch to night mode", toDay: "Switch to day mode", agenda: "Block 15 min in Teams", agendaTip: "Opens Teams with a 15-minute block ready to save" } };
+const X = { es: { scroll: "Desliza", back: "Ver versión clásica", scrollK: "Desliza ↓", open: "Abrir →", toNight: "Cambiar a modo noche", toDay: "Cambiar a modo día", agenda: "Resérvate 15 min para esto", agendaTip: "Abre Teams con un bloque de 15 minutos en tu calendario, listo para guardar" },
+            en: { scroll: "Scroll", back: "See classic version", scrollK: "Scroll ↓", open: "Open →", toNight: "Switch to night mode", toDay: "Switch to day mode", agenda: "Save 15 min for this", agendaTip: "Opens Teams with a 15-minute block in your calendar, ready to save" } };
 const retoAceptado = n => { try { return localStorage.getItem("pulso-reto-" + n) === "1"; } catch (e) { return false; } };
 /* Enlace que abre Teams con una reunión de 15 min lista para guardar (bloque personal, sin invitados).
    Horario: el siguiente día hábil a las 9:00, hora de Lima (UTC-5, sin horario de verano). */
