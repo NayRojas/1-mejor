@@ -158,6 +158,14 @@
   @media (prefers-color-scheme: dark){.accept,.benefit .ico{color:#0f1115}}
   @media (prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important}}
 </style>
+<!-- Microsoft Clarity: medición anónima de visitas y clics -->
+<script type="text/javascript">
+    (function(c,l,a,r,i,t,y){
+        c[a]=c[a]||function(){(c[a].q=c[a].q||[]).push(arguments)};
+        t=l.createElement(r);t.async=1;t.src="https://www.clarity.ms/tag/"+i;
+        y=l.getElementsByTagName(r)[0];y.parentNode.insertBefore(t,y);
+    })(window, document, "clarity", "script", "za1cmysgby");
+</script>
 </head>
 <body>
   <canvas id="confetti" aria-hidden="true"></canvas>
@@ -184,13 +192,14 @@
 
     <main id="main"></main>
 
-    <footer><span id="footTxt">1% Mejor · un tema para crecer, cada semana, en 2 minutos · Creado por</span> <strong>Nay Rojas</strong></footer>
+    <footer><span id="footTxt">1% Mejor · un tema para crecer, cada semana, en 2 minutos · Creado por</span> <strong>Nay Rojas</strong><br><small id="avisoTxt" style="font-size:12px;opacity:.8">Usamos Microsoft Clarity para entender cómo se usa este espacio y mejorarlo.</small></footer>
   </div>
 
 <script src="../contenido.js"></script>
 <script>
 /* ================= Lógica (no necesitas tocarla) ================= */
 const $ = s => document.querySelector(s);
+const track = n => { try { if (window.clarity) clarity("event", n); } catch (e) {} };
 const REDUCE = matchMedia("(prefers-reduced-motion: reduce)").matches;
 let semana = 0;
 let lang = "es";
@@ -203,12 +212,12 @@ function setLang(l) {
   document.querySelectorAll(".lang button").forEach(b => b.setAttribute("aria-pressed", b.dataset.lang === l));
   const t = T[l];
   document.title = t.title;
-  $("#brandTag").textContent = t.tag; $("#footTxt").textContent = t.foot;
+  $("#brandTag").textContent = t.tag; $("#footTxt").textContent = t.foot; $("#avisoTxt").textContent = t.aviso || "";
   $(".week").setAttribute("aria-label", t.nav);
   for (const [id, k] of [["#prevWeek", "prev"], ["#nextWeek", "next"]]) { $(id).setAttribute("aria-label", t[k]); $(id).title = t[k]; }
   render();
 }
-document.querySelectorAll(".lang button").forEach(b => b.onclick = () => setLang(b.dataset.lang));
+document.querySelectorAll(".lang button").forEach(b => b.onclick = () => { track("idioma_" + b.dataset.lang); setLang(b.dataset.lang); });
 const retoAceptado = n => { try { return localStorage.getItem("pulso-reto-" + n) === "1"; } catch (e) { return false; } };
 
 function render() {
@@ -272,6 +281,7 @@ function render() {
   });
   const btn = $(".accept");
   btn.onclick = () => {
+    track("reto_aceptado");
     const r = btn.getBoundingClientRect();
     confetti(r.left + r.width / 2, r.top + r.height / 2);
     if (navigator.vibrate) navigator.vibrate(30);
@@ -279,8 +289,8 @@ function render() {
     try { localStorage.setItem("pulso-reto-" + s.numero, "1"); } catch (e) {}
   };
 }
-$("#prevWeek").onclick = () => { semana++; render(); };
-$("#nextWeek").onclick = () => { semana--; render(); };
+$("#prevWeek").onclick = () => { track("semana_anterior"); semana++; render(); };
+$("#nextWeek").onclick = () => { track("semana_siguiente"); semana--; render(); };
 
 /* Confeti del reto */
 const cv = $("#confetti"), ctx = cv.getContext("2d");

@@ -127,6 +127,7 @@ const T = {
         quiz: "Repaso rápido · 1 pregunta", ok: "¡Correcto! ", no: "Casi. ",
         tech: "Además, en tech", why: "Por qué nos importa:",
         foot: "1% Mejor · un tema para crecer, cada semana, en 2 minutos · Creado por",
+        aviso: "Usamos Microsoft Clarity para entender cómo se usa este espacio y mejorarlo.",
         nav: "Cambiar de semana", prev: "Semana anterior", next: "Semana siguiente", title: "1% Mejor · el tema de la semana" },
   en: { tag: "one topic to grow, every week", week: "Week", now: "This week's topic", past: "Topic from a past week",
         helps: "Helps you", pastNote: "You're viewing a past week. Use the › arrow to go back to the current one.",
@@ -135,5 +136,6 @@ const T = {
         quiz: "Quick review · 1 question", ok: "Correct! ", no: "Not quite. ",
         tech: "Also in tech", why: "Why it matters to us:",
         foot: "1% Mejor · one topic to grow, every week, in 2 minutes · Created by",
+        aviso: "We use Microsoft Clarity to understand how this space is used and improve it.",
         nav: "Change week", prev: "Previous week", next: "Next week", title: "1% Mejor · this week's topic" }
 };
