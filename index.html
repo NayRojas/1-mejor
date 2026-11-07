@@ -144,6 +144,23 @@
   .reto small{font-size:13px;font-weight:700;letter-spacing:.12em;text-transform:uppercase;opacity:.7}
   .reto h2{font-family:var(--head);font-weight:800;font-size:clamp(40px,7vw,104px);line-height:.98;letter-spacing:-.045em;margin:14px 0 20px}
   .reto p{font-size:clamp(17px,1.7vw,22px);opacity:.8;max-width:40ch}
+  /* Mini checklist de ejemplo junto al texto del reto */
+  .reto-body{display:flex;flex-wrap:wrap;align-items:center;gap:22px 34px}
+  .mini{list-style:none;flex:0 0 auto;width:min(100%,290px);border:1px solid color-mix(in srgb,var(--paper) 20%,transparent);
+    border-radius:14px;padding:10px 14px;font-size:13.5px}
+  .mini li{display:flex;align-items:center;gap:10px;padding:7px 0;opacity:0;transform:translateX(12px);transition:opacity .5s,transform .6s var(--ease)}
+  .mini li+li{border-top:1px solid color-mix(in srgb,var(--paper) 12%,transparent)}
+  .in .mini li{opacity:1;transform:none}
+  .mini .box{flex:none;width:16px;height:16px;border-radius:4px;border:1.5px solid color-mix(in srgb,var(--paper) 55%,transparent);display:grid;place-items:center}
+  .mini .box{color:var(--paper)}
+  .mini li:not(.ok) .box svg{display:none}
+  .mini .box svg{stroke-dasharray:20;stroke-dashoffset:20;transition:stroke-dashoffset .5s ease}
+  .mini li.ok .box{background:var(--accent);border-color:var(--accent)}
+  .in .mini li.ok .box svg{stroke-dashoffset:0}
+  .mini li.ok .t{text-decoration:line-through;opacity:.6}
+  .mini .t{flex:1;min-width:0;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+  .mini .f{flex:none;font-size:12px;font-weight:600;color:var(--accent);background:color-mix(in srgb,var(--accent) 16%,transparent);padding:2px 8px;border-radius:999px}
+  [data-theme="dark"] .mini .f{color:color-mix(in srgb,var(--accent) 45%,#000);background:color-mix(in srgb,var(--accent) 30%,transparent)}
   .magnet{width:clamp(150px,16vw,200px);aspect-ratio:1;border-radius:50%;background:var(--paper);color:var(--ink);
     font-family:var(--head);font-weight:700;font-size:16px;line-height:1.2;padding:18px;display:grid;place-items:center;text-align:center;
     transition:transform .35s var(--ease),background .3s,color .3s;justify-self:start}
@@ -306,7 +323,14 @@ function render() {
       <div class="rv">
         <small>${L.reto}</small>
         <h2>${d.reto.titulo}</h2>
-        <p>${d.reto.texto}</p>
+        <div class="reto-body">
+          <p>${d.reto.texto}</p>
+          ${d.reto.lista ? `<ul class="mini" aria-label="Ejemplo">${d.reto.lista.map((x, i) => `
+            <li class="${x.hecho ? "ok" : ""}" style="transition-delay:${0.35 + i * 0.12}s">
+              <span class="box" aria-hidden="true"><svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="4" stroke-linecap="round" stroke-linejoin="round" style="transition-delay:${0.9 + i * 0.12}s"><path d="M4 12l5 5L20 7"/></svg></span>
+              <span class="t">${x.texto}</span><span class="f">${x.fecha}</span>
+            </li>`).join("")}</ul>` : ""}
+        </div>
       </div>
       <button class="magnet${ok ? " done" : ""}" type="button">${ok ? L.accepted : L.accept}</button>
     </section>

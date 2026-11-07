@@ -8,6 +8,8 @@
    - "tips" = máximo 5 claves.
    - "tech" es opcional: si no hay noticia, omite el bloque.
    - "en" es opcional: la misma semana en inglés.
+   - "reto.lista" es opcional: un ejemplo tipo checklist que se muestra
+     junto al reto, con "texto", "fecha" y "hecho" (true/false).
    - "color" es opcional: el color de la semana, uno para modo
      claro y otro para modo oscuro. Si falta, se usa el verde.
    ========================================================= */
@@ -28,7 +30,13 @@ const SEMANAS = [
         { titulo: "Haz visible un solo orden", texto: "Una lista ordenada que todos conozcan. Si entra algo nuevo, pregunta: ¿qué bajamos?" }
       ],
       fuente: "Matriz de Eisenhower, Kanban (límites WIP) y Gerald Weinberg",
-      reto: { titulo: "Haz visibles tus frentes", texto: "Lista todos los frentes que tienes abiertos con su fecha de entrega y ordénalos para decidir dónde poner tu esfuerzo." }
+      reto: { titulo: "Haz visibles tus frentes", texto: "Lista todos los frentes que tienes abiertos con su fecha de entrega y ordénalos para decidir dónde poner tu esfuerzo.",
+        lista: [
+          { texto: "Fix en producción", fecha: "Hoy", hecho: true },
+          { texto: "Release v2.3", fecha: "12 nov" },
+          { texto: "Pruebas de regresión", fecha: "14 nov" },
+          { texto: "Documentar API", fecha: "20 nov" }
+        ] }
     },
     en: {
       fechas: "Nov 09 – 13",
@@ -44,7 +52,13 @@ const SEMANAS = [
           { titulo: "Make a single order visible", texto: "One ranked list everyone knows. If something new comes in, ask: what moves down?" }
         ],
         fuente: "Eisenhower Matrix, Kanban (WIP limits) and Gerald Weinberg",
-        reto: { titulo: "Make your fronts visible", texto: "List every front you have open with its due date, and rank them to decide where to put your effort." }
+        reto: { titulo: "Make your fronts visible", texto: "List every front you have open with its due date, and rank them to decide where to put your effort.",
+          lista: [
+            { texto: "Production fix", fecha: "Today", hecho: true },
+            { texto: "Release v2.3", fecha: "Nov 12" },
+            { texto: "Regression tests", fecha: "Nov 14" },
+            { texto: "Document API", fecha: "Nov 20" }
+          ] }
       }
     }
   },
