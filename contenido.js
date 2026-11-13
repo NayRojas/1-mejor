@@ -22,7 +22,7 @@ const SEMANAS = [
     publicar: "2026-11-16",                            // aparece sola ese día (hora de Lima)
     color: { claro: "#6d28d9", oscuro: "#a78bfa" },   // violeta: colaboración
     soft: {
-      categoria: "Reuniones efectivas",
+      categoria: "Gestión de reuniones",
       titulo: "Haz que cada reunión valga la pena",
       ayuda: "Llegar preparado, aportar y cuidar el tiempo de todos.",
       tips: [
@@ -43,7 +43,7 @@ const SEMANAS = [
     en: {
       fechas: "Nov 16 – 20",
       soft: {
-        categoria: "Effective meetings",
+        categoria: "Meeting management",
         titulo: "Make every meeting worth it",
         ayuda: "Show up prepared, contribute, and respect everyone's time.",
         tips: [
