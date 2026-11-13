@@ -23,8 +23,8 @@ const SEMANAS = [
     color: { claro: "#6d28d9", oscuro: "#a78bfa" },   // violeta: colaboración
     soft: {
       categoria: "Gestión de reuniones",
-      titulo: "Haz que cada reunión valga la pena",
-      ayuda: "Llegar preparado, aportar y cuidar el tiempo de todos.",
+      titulo: "Haz que cada reunión cuente",
+      ayuda: "Llegar preparado, presente y a tiempo, aunque tu agenda esté llena.",
       tips: [
         { titulo: "Entra sabiendo para qué", texto: "Define el propósito de la reunión y qué se espera de ti." },
         { titulo: "Prepara hoy lo de mañana", texto: "Mira tus sesiones de mañana y prepárate con antelación." },
@@ -44,8 +44,8 @@ const SEMANAS = [
       fechas: "Nov 16 – 20",
       soft: {
         categoria: "Meeting management",
-        titulo: "Make every meeting worth it",
-        ayuda: "Show up prepared, contribute, and respect everyone's time.",
+        titulo: "Make every meeting count",
+        ayuda: "Show up prepared, present, and on time, even with a full calendar.",
         tips: [
           { titulo: "Walk in knowing why", texto: "Define the meeting's purpose and what's expected of you." },
           { titulo: "Prepare today for tomorrow", texto: "Check tomorrow's sessions and get ready ahead of time." },
