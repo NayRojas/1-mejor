@@ -10,10 +10,59 @@
    - "en" es opcional: la misma semana en inglés.
    - "reto.lista" es opcional: un ejemplo tipo checklist que se muestra
      junto al reto, con "texto", "fecha" y "hecho" (true/false).
+   - "publicar" es opcional: la fecha (AAAA-MM-DD) en que la semana aparece.
+     Antes de esa fecha solo se ve con el enlace de vista previa (?previa).
    - "color" es opcional: el color de la semana, uno para modo
      claro y otro para modo oscuro. Si falta, se usa el verde.
    ========================================================= */
 const SEMANAS = [
+  {
+    numero: 47,
+    fechas: "16 – 20 nov",
+    publicar: "2026-11-16",                            // aparece sola ese día (hora de Lima)
+    color: { claro: "#6d28d9", oscuro: "#a78bfa" },   // violeta: colaboración
+    soft: {
+      categoria: "Reuniones efectivas",
+      titulo: "Haz que cada reunión valga la pena",
+      ayuda: "Llegar preparado, aportar y cuidar el tiempo de todos.",
+      tips: [
+        { titulo: "Entra sabiendo para qué", texto: "Define el propósito de la reunión y qué se espera de ti." },
+        { titulo: "Prepara hoy lo de mañana", texto: "Mira tus sesiones de mañana y prepárate con antelación." },
+        { titulo: "Que te vean", texto: "Prende tu cámara cuando puedas: la presencia importa y genera confianza." },
+        { titulo: "Que tu voz se escuche", texto: "Habla fuerte y claro, y ve al punto." },
+        { titulo: "Ninguna invitación sin respuesta", texto: "No negociable: acepta, rechaza o avisa si llegas tarde. Es el tiempo de otra persona y el tuyo." }
+      ],
+      reto: { titulo: "Agenda al día", texto: "Hoy, responde todas tus invitaciones pendientes y revisa las reuniones de mañana: ¿sabes para qué es cada una?",
+        lista: [
+          { texto: "Reunión de equipo", fecha: "Aceptada", hecho: true },
+          { texto: "Sesión de planificación", fecha: "Aceptada", hecho: true },
+          { texto: "Revisión de avances", fecha: "Aviso: tarde", hecho: true },
+          { texto: "Sesión con otra área", fecha: "Pendiente" }
+        ] }
+    },
+    en: {
+      fechas: "Nov 16 – 20",
+      soft: {
+        categoria: "Effective meetings",
+        titulo: "Make every meeting worth it",
+        ayuda: "Show up prepared, contribute, and respect everyone's time.",
+        tips: [
+          { titulo: "Walk in knowing why", texto: "Define the meeting's purpose and what's expected of you." },
+          { titulo: "Prepare today for tomorrow", texto: "Check tomorrow's sessions and get ready ahead of time." },
+          { titulo: "Be seen", texto: "Turn on your camera when you can: presence matters and builds trust." },
+          { titulo: "Make your voice heard", texto: "Speak loud and clear, and get to the point." },
+          { titulo: "No invite left unanswered", texto: "Non-negotiable: accept, decline, or say if you'll be late. It's someone else's time, and yours." }
+        ],
+        reto: { titulo: "Calendar up to date", texto: "Today, answer all your pending invites and review tomorrow's meetings: do you know what each one is for?",
+          lista: [
+            { texto: "Team meeting", fecha: "Accepted", hecho: true },
+            { texto: "Planning session", fecha: "Accepted", hecho: true },
+            { texto: "Progress review", fecha: "Late, notified", hecho: true },
+            { texto: "Session with another area", fecha: "Pending" }
+          ] }
+      }
+    }
+  },
   {
     numero: 46,
     fechas: "09 – 13 nov",
@@ -131,6 +180,16 @@ const SEMANAS = [
     }
   }
 ];
+
+
+/* Publicación programada: una semana con "publicar" en el futuro no se muestra
+   hasta ese día (hora de Lima). Para verla antes, abre la página con ?previa al final. */
+(() => {
+  const previa = /[?&]previa\b/.test(location.search);
+  const hoy = new Date(Date.now() - 5 * 3600e3).toISOString().slice(0, 10);
+  for (let i = SEMANAS.length - 1; i >= 0; i--)
+    if (!previa && SEMANAS[i].publicar && SEMANAS[i].publicar > hoy) SEMANAS.splice(i, 1);
+})();
 
 /* Textos de la interfaz (no necesitas tocarlos) */
 const T = {
