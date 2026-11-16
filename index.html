@@ -645,6 +645,28 @@ function labelA11y() {
   });
 }
 let speaking = false;
+/* Elige la voz más natural disponible en el navegador:
+   1) voces neuronales "Natural"/"Online" (Edge), 2) voces de Google (Chrome), 3) cualquier otra del idioma.
+   En español prefiere acentos latinoamericanos. */
+function mejorVoz(l) {
+  if (!canSpeak) return null;
+  const vs = speechSynthesis.getVoices().filter(v => v.lang.toLowerCase().startsWith(l));
+  if (!vs.length) return null;
+  const latam = ["es-pe", "es-mx", "es-419", "es-us", "es-co", "es-cl", "es-ar"];
+  const score = v => {
+    const n = v.name.toLowerCase(), lg = v.lang.toLowerCase();
+    let p = 0;
+    if (/natural|neural|online/.test(n)) p += 100;
+    else if (/google/.test(n)) p += 60;
+    else if (/premium|enhanced|mejorad/.test(n)) p += 50;
+    if (l === "es") { const i = latam.indexOf(lg); p += i >= 0 ? 20 - i : 0; }
+    if (l === "en" && lg === "en-us") p += 10;
+    if (v.localService === false) p += 5;
+    return p;
+  };
+  return vs.sort((a, b) => score(b) - score(a))[0];
+}
+if (canSpeak) { speechSynthesis.getVoices(); speechSynthesis.onvoiceschanged = () => speechSynthesis.getVoices(); }
 function stopSpeak() { if (canSpeak) speechSynthesis.cancel(); speaking = false; labelA11y(); }
 function speak() {
   const s = view(SEMANAS[semana]), d = s.soft, L = T[lang];
@@ -652,6 +674,7 @@ function speak() {
     ...d.tips.map((x, i) => `${i + 1}. ${x.titulo}. ${x.texto}`), `${L.reto}: ${d.reto.titulo}. ${d.reto.texto}`].join(" ");
   const u = new SpeechSynthesisUtterance(txt);
   u.lang = lang === "es" ? "es-419" : "en-US"; u.rate = .95;
+  try { const v = mejorVoz(lang); if (v) { u.voice = v; u.lang = v.lang; } } catch (e) {}
   u.onend = u.onerror = () => { speaking = false; labelA11y(); };
   speechSynthesis.cancel(); speechSynthesis.speak(u); speaking = true; labelA11y();
 }
