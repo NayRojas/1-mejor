@@ -194,13 +194,18 @@
   .rv.in{opacity:1;transform:none}
 
   /* cursor: invierte colores y muestra texto según el contexto */
-  .cur{position:fixed;left:0;top:0;width:24px;height:24px;margin:-12px 0 0 -12px;border-radius:50%;background:#fff;
-    mix-blend-mode:difference;pointer-events:none;z-index:75;opacity:0;display:grid;place-items:center;overflow:hidden;
-    transition:width .4s var(--ease),height .4s var(--ease),margin .4s var(--ease),background .3s,opacity .3s}
+  .cur{position:fixed;left:0;top:0;width:26px;height:26px;margin:-13px 0 0 -13px;border-radius:50%;
+    background:color-mix(in srgb,var(--accent) 22%,transparent);box-shadow:0 0 0 1px color-mix(in srgb,var(--accent) 35%,transparent);
+    pointer-events:none;z-index:75;opacity:0;display:grid;place-items:center;overflow:hidden;
+    transition:width .7s var(--ease),height .7s var(--ease),margin .7s var(--ease),background .6s,box-shadow .6s,opacity .5s}
+  /* respiración lenta cuando el mouse está quieto */
+  .cur.idle{animation:breathe 4s ease-in-out infinite}
+  @keyframes breathe{0%,100%{box-shadow:0 0 0 1px color-mix(in srgb,var(--accent) 35%,transparent)}
+    50%{box-shadow:0 0 0 9px color-mix(in srgb,var(--accent) 10%,transparent)}}
   .cur span{font:700 13px var(--head);letter-spacing:-.01em;white-space:nowrap;color:#fff;opacity:0;transform:scale(.6);transition:opacity .2s,transform .3s var(--ease)}
-  .cur.btn{width:46px;height:46px;margin:-23px 0 0 -23px}
-  .cur.inv{width:132px;height:132px;margin:-66px 0 0 -66px}
-  .cur.lbl{mix-blend-mode:normal;background:var(--accent);width:96px;height:96px;margin:-48px 0 0 -48px}
+  .cur.btn{width:44px;height:44px;margin:-22px 0 0 -22px;background:color-mix(in srgb,var(--accent) 16%,transparent)}
+  .cur.inv{width:90px;height:90px;margin:-45px 0 0 -45px;background:color-mix(in srgb,var(--accent) 9%,transparent);box-shadow:0 0 0 1px color-mix(in srgb,var(--accent) 18%,transparent)}
+  .cur.lbl{background:var(--accent);width:96px;height:96px;margin:-48px 0 0 -48px}
   .cur.lbl span{opacity:1;transform:none}
   .cur.hide{width:0;height:0;margin:0}
   [data-theme="dark"] .cur.lbl span{color:#0c0f14}
@@ -447,10 +452,11 @@ if (FINE && !REDUCE) {
   let st = 0, ang = 0;
   (function loop() {
     const dx = x - cx, dy = y - cy;
-    cx += dx * .18; cy += dy * .18;
+    cx += dx * .1; cy += dy * .1;                       // sigue al mouse con calma
     const vel = Math.hypot(dx, dy);
-    const objetivo = (mode === "lbl" || mode === "hide") ? 0 : Math.min(vel / 160, .55);
-    st += (objetivo - st) * .2;
+    const objetivo = (mode === "lbl" || mode === "hide") ? 0 : Math.min(vel / 400, .16);
+    st += (objetivo - st) * .08;
+    c.classList.toggle("idle", vel < .5 && mode === "");
     if (vel > 1.5) ang = Math.atan2(dy, dx) * 180 / Math.PI;
     c.style.transform = `translate(${cx}px,${cy}px) rotate(${ang}deg) scale(${1 + st},${1 - st * .45})`;
     requestAnimationFrame(loop);

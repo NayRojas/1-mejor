@@ -22,7 +22,7 @@ const SEMANAS = [
     numero: 47,
     fechas: "16 – 20 nov",
     publicar: "2026-11-16",                            // aparece sola ese día (hora de Lima)
-    color: { claro: "#6d28d9", oscuro: "#a78bfa" },   // violeta: colaboración
+    color: { claro: "#5b5fc7", oscuro: "#9ea2ff" },   // tono Teams: la semana es de reuniones
     soft: {
       categoria: "Gestión de reuniones",
       titulo: "Haz que cada reunión cuente",
