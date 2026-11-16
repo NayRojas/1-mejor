@@ -3,6 +3,7 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
+<script>(()=>{try{["big","hc","calm"].forEach(k=>{if(localStorage.getItem("pulso-a11y-"+k)==="1")document.documentElement.classList.add("a11y-"+k)})}catch(e){}})()</script>
 <script>(()=>{let t;try{t=localStorage.getItem("pulso-theme")}catch(e){}document.documentElement.dataset.theme=t||(matchMedia("(prefers-color-scheme: dark)").matches?"dark":"light")})()</script>
 <title>1% Mejor · el tema de la semana</title>
 <meta name="description" content="Cada semana, un tema para crecer en 2 minutos: claves prácticas y un reto para aplicarlas.">
@@ -288,6 +289,47 @@
   html.theming *,html.theming *::before,html.theming *::after{transition:background-color 1.2s ease,color 1.2s ease,border-color 1.2s ease,fill 1.2s ease!important}
 
 
+
+  /* ===== Accesibilidad ===== */
+  .a11y{position:relative}
+  .a11y-panel{position:absolute;top:calc(100% + 10px);right:0;width:300px;max-width:calc(100vw - 32px);z-index:60;
+    background:var(--paper);border:1px solid var(--line);border-radius:16px;padding:16px;
+    box-shadow:0 20px 50px -20px rgba(0,0,0,.35);opacity:0;visibility:hidden;transform:translateY(-6px);
+    transition:opacity .25s,transform .3s var(--ease),visibility 0s .3s}
+  .a11y.open .a11y-panel{opacity:1;visibility:visible;transform:none;transition:opacity .25s,transform .3s var(--ease)}
+  .a11y-panel h2{font:700 15px var(--head);margin-bottom:2px}
+  .a11y-panel > p{font-size:12.5px;color:var(--muted);margin-bottom:12px}
+  .opt{width:100%;display:flex;align-items:center;gap:12px;padding:10px 4px;border-top:1px solid var(--line);text-align:left}
+  .opt .oi{flex:none;width:30px;height:30px;border-radius:9px;display:grid;place-items:center;background:color-mix(in srgb,var(--accent) 14%,transparent);color:var(--accent)}
+  .opt .ot{flex:1;min-width:0;font-size:14px;font-weight:600;line-height:1.25}
+  .opt .ot small{display:block;font-size:12px;font-weight:400;color:var(--muted)}
+  .sw{flex:none;width:36px;height:20px;border-radius:999px;background:var(--line);position:relative;transition:background .25s}
+  .sw::after{content:"";position:absolute;top:2px;left:2px;width:16px;height:16px;border-radius:50%;background:#fff;box-shadow:0 1px 2px rgba(0,0,0,.3);transition:transform .25s var(--ease)}
+  .opt[aria-pressed="true"] .sw{background:var(--accent)}
+  .opt[aria-pressed="true"] .sw::after{transform:translateX(16px)}
+  .opt.speak[aria-pressed="true"] .ot small{color:var(--accent)}
+  @media (max-width:420px){.ctrl{gap:5px}.tbtn{width:34px;height:34px}.bar{gap:6px}.wkw{display:none}}
+  @media (max-width:640px){.a11y-panel{position:fixed;top:66px;left:16px;right:16px;width:auto;max-width:none}}
+
+  /* Texto más grande y espaciado de lectura */
+  html.a11y-big .key p,html.a11y-big .help p,html.a11y-big .reto p,html.a11y-big .tech p{font-size:clamp(20px,2vw,26px);line-height:1.65}
+  html.a11y-big .key h3{letter-spacing:-.01em}
+  html.a11y-big .mini{font-size:15.5px}
+  html.a11y-big .eyebrow,html.a11y-big .k-label,html.a11y-big .reto small,html.a11y-big .help small{font-size:15px;letter-spacing:.06em}
+  html.a11y-big footer,html.a11y-big .cue{font-size:15.5px}
+  html.a11y-big .ev{font-size:12px}
+  /* Alto contraste */
+  html.a11y-hc{--muted:var(--ink);--line:color-mix(in srgb,var(--ink) 45%,transparent)}
+  html.a11y-hc .reto p,html.a11y-hc .reto small{opacity:1}
+  html.a11y-hc a{text-decoration:underline}
+  html.a11y-hc :focus-visible{outline-width:3px}
+  html.a11y-hc .bgnum{-webkit-text-stroke-color:color-mix(in srgb,var(--ink) 35%,transparent)}
+  /* Sin animaciones */
+  html.a11y-calm *,html.a11y-calm *::before,html.a11y-calm *::after{animation:none!important;transition:none!important}
+  html.a11y-calm .loader,html.a11y-calm .cur{display:none!important}
+  html.a11y-calm .kin .w > span,html.a11y-calm .help,html.a11y-calm .cue,html.a11y-calm .rv,html.a11y-calm .ev,html.a11y-calm .calmock,html.a11y-calm .mini li{transform:none!important;opacity:1!important}
+  html.a11y-calm .marquee .track{animation:none!important}
+
   @media (prefers-reduced-motion:reduce){
     *{animation:none!important;transition:none!important}
     .loader{display:none}
@@ -312,6 +354,18 @@
   <header class="bar">
     <div class="brand">1% <span>Mejor</span></div>
     <div class="ctrl">
+      <div class="a11y" id="a11y">
+        <button class="tbtn" id="a11yBtn" type="button" aria-haspopup="true" aria-expanded="false" aria-controls="a11yPanel" aria-label="Accesibilidad" title="Accesibilidad">
+          <svg width="19" height="19" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="4.5" r="1.6"/><path d="M5 8.5l7 1.5 7-1.5M12 10v4.5M12 14.5l-3 6M12 14.5l3 6"/></svg>
+        </button>
+        <div class="a11y-panel" id="a11yPanel" role="group" aria-labelledby="a11yTitle">
+          <h2 id="a11yTitle"></h2><p id="a11yIntro"></p>
+          <button class="opt" type="button" data-k="big" aria-pressed="false"><span class="oi" aria-hidden="true"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"><path d="M4 18L9 6l5 12M5.8 14h6.4M16 18l2.5-6 2.5 6M16.8 16.2h3.4"/></svg></span><span class="ot"></span><span class="sw" aria-hidden="true"></span></button>
+          <button class="opt" type="button" data-k="hc" aria-pressed="false"><span class="oi" aria-hidden="true"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><circle cx="12" cy="12" r="8.5"/><path d="M12 3.5v17A8.5 8.5 0 0 0 12 3.5z" fill="currentColor"/></svg></span><span class="ot"></span><span class="sw" aria-hidden="true"></span></button>
+          <button class="opt" type="button" data-k="calm" aria-pressed="false"><span class="oi" aria-hidden="true"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"><rect x="6" y="5" width="4" height="14" rx="1"/><rect x="14" y="5" width="4" height="14" rx="1"/></svg></span><span class="ot"></span><span class="sw" aria-hidden="true"></span></button>
+          <button class="opt speak" type="button" data-k="speak" aria-pressed="false"><span class="oi" aria-hidden="true"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 9.5v5h3.5L12 18.5v-13L7.5 9.5z"/><path d="M15.5 9a4 4 0 0 1 0 6M18 6.5a7.5 7.5 0 0 1 0 11"/></svg></span><span class="ot"></span><span class="sw" aria-hidden="true"></span></button>
+        </div>
+      </div>
       <button class="tbtn" id="themeBtn" type="button" aria-label="Cambiar a modo noche" title="Cambiar a modo noche">
         <svg class="moon" width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12.8A9 9 0 1 1 11.2 3a7 7 0 0 0 9.8 9.8z"/></svg>
         <svg class="sun" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M4.9 4.9l1.4 1.4M17.7 17.7l1.4 1.4M2 12h2M20 12h2M4.9 19.1l1.4-1.4M17.7 6.3l1.4-1.4"/></svg>
@@ -334,7 +388,7 @@
 <script>
 const $ = s => document.querySelector(s);
 const track = n => { try { if (window.clarity) clarity("event", n); } catch (e) {} };
-const REDUCE = matchMedia("(prefers-reduced-motion: reduce)").matches;
+const REDUCE = matchMedia("(prefers-reduced-motion: reduce)").matches || document.documentElement.classList.contains("a11y-calm");
 const FINE = matchMedia("(hover:hover)").matches;
 let semana = 0, lang = "es";
 try { if (localStorage.getItem("pulso-lang") === "en") lang = "en"; } catch (e) {}
@@ -391,7 +445,7 @@ function render() {
   if (col && col.claro) rs.setProperty("--wk-claro", col.claro); else rs.removeProperty("--wk-claro");
   if (col && col.oscuro) rs.setProperty("--wk-oscuro", col.oscuro); else rs.removeProperty("--wk-oscuro");
   document.documentElement.lang = lang; document.title = L.title;
-  $("#weekNum").innerHTML = `${L.week} ${s.numero}<span class="wkd"> · ${s.fechas}</span>`;
+  $("#weekNum").innerHTML = `<span class="wkw">${L.week} </span>${s.numero}<span class="wkd"> · ${s.fechas}</span>`;
   $("#prevWeek").disabled = semana === SEMANAS.length - 1;
   $("#nextWeek").disabled = semana === 0;
   document.querySelectorAll(".lang button").forEach(b => b.setAttribute("aria-pressed", b.dataset.lang === lang));
@@ -500,7 +554,7 @@ addEventListener("resize", onScroll);
 document.querySelectorAll(".lang button").forEach(b => b.onclick = () => {
   track("idioma_" + b.dataset.lang);
   lang = b.dataset.lang; try { localStorage.setItem("pulso-lang", lang); } catch (e) {}
-  labelTheme();
+  labelTheme(); if (speaking) stopSpeak(); labelA11y();
   document.body.classList.remove("ready"); render();
 });
 $("#prevWeek").onclick = () => { track("semana_anterior"); semana++; document.body.classList.remove("ready"); scrollTo(0, 0); render(); };
@@ -567,6 +621,57 @@ matchMedia("(prefers-color-scheme: dark)").addEventListener("change", e => {
   let saved = null; try { saved = localStorage.getItem("pulso-theme"); } catch (err) {}
   if (!saved) { document.documentElement.dataset.theme = e.matches ? "dark" : "light"; labelTheme(); }
 });
+
+/* Accesibilidad: texto grande, alto contraste, sin animaciones y escuchar el tema */
+const A = {
+  es: { btn: "Accesibilidad", title: "Accesibilidad", intro: "Ajusta la página a tu forma de leer. Se recuerda en este navegador.",
+        big: ["Texto más grande", "Más tamaño y espacio entre líneas"], hc: ["Alto contraste", "Textos y bordes más marcados"],
+        calm: ["Sin animaciones", "Quita movimientos y efectos"], speak: ["Escuchar el tema", "Lee en voz alta el tema y las claves"], stop: "Leyendo… toca para detener" },
+  en: { btn: "Accessibility", title: "Accessibility", intro: "Adjust the page to the way you read. Saved in this browser.",
+        big: ["Larger text", "Bigger size and line spacing"], hc: ["High contrast", "Stronger text and borders"],
+        calm: ["No animations", "Removes motion and effects"], speak: ["Listen to the topic", "Reads the topic and keys aloud"], stop: "Reading… tap to stop" }
+};
+const a11y = $("#a11y"), a11yBtn = $("#a11yBtn"), html = document.documentElement;
+const canSpeak = "speechSynthesis" in window;
+function labelA11y() {
+  const t = A[lang];
+  a11yBtn.setAttribute("aria-label", t.btn); a11yBtn.title = t.btn;
+  $("#a11yTitle").textContent = t.title; $("#a11yIntro").textContent = t.intro;
+  document.querySelectorAll(".opt").forEach(o => {
+    const k = o.dataset.k, on = k === "speak" ? speaking : html.classList.contains("a11y-" + k);
+    o.setAttribute("aria-pressed", on);
+    o.querySelector(".ot").innerHTML = `${t[k][0]}<small>${k === "speak" && on ? t.stop : t[k][1]}</small>`;
+    if (k === "speak") o.hidden = !canSpeak;
+  });
+}
+let speaking = false;
+function stopSpeak() { if (canSpeak) speechSynthesis.cancel(); speaking = false; labelA11y(); }
+function speak() {
+  const s = view(SEMANAS[semana]), d = s.soft, L = T[lang];
+  const txt = [`${d.categoria}. ${d.titulo}.`, `${L.helps}: ${d.ayuda || ""}`,
+    ...d.tips.map((x, i) => `${i + 1}. ${x.titulo}. ${x.texto}`), `${L.reto}: ${d.reto.titulo}. ${d.reto.texto}`].join(" ");
+  const u = new SpeechSynthesisUtterance(txt);
+  u.lang = lang === "es" ? "es-419" : "en-US"; u.rate = .95;
+  u.onend = u.onerror = () => { speaking = false; labelA11y(); };
+  speechSynthesis.cancel(); speechSynthesis.speak(u); speaking = true; labelA11y();
+}
+a11yBtn.onclick = e => {
+  e.stopPropagation();
+  const open = !a11y.classList.contains("open");
+  a11y.classList.toggle("open", open); a11yBtn.setAttribute("aria-expanded", open);
+  if (open) { track("accesibilidad_abrir"); setTimeout(() => $(".opt").focus(), 50); }
+};
+document.querySelectorAll(".opt").forEach(o => o.onclick = () => {
+  const k = o.dataset.k;
+  if (k === "speak") { speaking ? stopSpeak() : (track("a11y_escuchar"), speak()); return; }
+  const on = html.classList.toggle("a11y-" + k);
+  try { localStorage.setItem("pulso-a11y-" + k, on ? "1" : "0"); } catch (e) {}
+  if (on) track("a11y_" + k);
+  labelA11y();
+});
+document.addEventListener("click", e => { if (!e.composedPath().includes(a11y)) { a11y.classList.remove("open"); a11yBtn.setAttribute("aria-expanded", false); } });
+document.addEventListener("keydown", e => { if (e.key === "Escape" && a11y.classList.contains("open")) { a11y.classList.remove("open"); a11yBtn.setAttribute("aria-expanded", false); a11yBtn.focus(); } });
+labelA11y();
 
 /* Confeti */
 const cv = $("#confetti"), ctx = cv.getContext("2d");
