@@ -23,6 +23,7 @@ const SEMANAS = [
     fechas: "16 – 20 nov",
     publicar: "2026-11-16",                            // aparece sola ese día (hora de Lima)
     color: { claro: "#5b5fc7", oscuro: "#9ea2ff" },   // tono Teams: la semana es de reuniones
+    estilo: "teams",                                   // calendario y formas tipo Teams
     soft: {
       categoria: "Gestión de reuniones",
       titulo: "Haz que cada reunión cuente",
@@ -36,10 +37,10 @@ const SEMANAS = [
       ],
       reto: { titulo: "Agenda al día", accion: "calendario", texto: "Ve a Teams y revisa tu calendario: responde las invitaciones pendientes y confirma para qué es cada reunión de hoy y mañana.",
         lista: [
-          { texto: "Reunión de equipo", fecha: "Aceptada", hecho: true },
-          { texto: "Sesión de planificación", fecha: "Aceptada", hecho: true },
-          { texto: "Revisión de avances", fecha: "Aviso: tarde", hecho: true },
-          { texto: "Sesión con otra área", fecha: "Pendiente" }
+          { texto: "Reunión de equipo", fecha: "Aceptada", hecho: true, tono: "ok" },
+          { texto: "Sesión de planificación", fecha: "Aceptada", hecho: true, tono: "ok" },
+          { texto: "Revisión de avances", fecha: "Aviso: tarde", hecho: true, tono: "warn" },
+          { texto: "Sesión con otra área", fecha: "Pendiente", tono: "pend" }
         ] }
     },
     en: {
@@ -57,10 +58,10 @@ const SEMANAS = [
         ],
         reto: { titulo: "Calendar up to date", accion: "calendario", texto: "Go to Teams and check your calendar: answer pending invites and confirm what each of today's and tomorrow's meetings is for.",
           lista: [
-            { texto: "Team meeting", fecha: "Accepted", hecho: true },
-            { texto: "Planning session", fecha: "Accepted", hecho: true },
-            { texto: "Progress review", fecha: "Late, notified", hecho: true },
-            { texto: "Session with another area", fecha: "Pending" }
+            { texto: "Team meeting", fecha: "Accepted", hecho: true, tono: "ok" },
+            { texto: "Planning session", fecha: "Accepted", hecho: true, tono: "ok" },
+            { texto: "Progress review", fecha: "Late, notified", hecho: true, tono: "warn" },
+            { texto: "Session with another area", fecha: "Pending", tono: "pend" }
           ] }
       }
     }

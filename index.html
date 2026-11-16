@@ -148,6 +148,59 @@
     font-size:14.5px;font-weight:600;color:var(--paper);border:1px solid color-mix(in srgb,var(--paper) 32%,transparent);transition:background .25s,border-color .25s,color .25s}
   .agenda:hover{background:var(--accent);border-color:var(--accent);color:#fff}
   [data-theme="dark"] .agenda:hover{color:#0c0f14}
+
+  /* ===== Estilo de semana "teams": colores y formas tipo calendario de reuniones ===== */
+  .calmock{display:none}
+  .st-teams .bgnum{display:none}
+  @media (min-width:1100px){
+    .st-teams .calmock{display:block;position:absolute;right:clamp(16px,5vw,80px);bottom:clamp(40px,8vh,90px);width:430px;z-index:0;
+      background:color-mix(in srgb,var(--paper),#fff 60%);border:1px solid var(--line);border-radius:12px;padding:14px 14px 16px;
+      box-shadow:0 1px 2px rgba(0,0,0,.06),0 24px 48px -24px rgba(70,78,184,.35);
+      opacity:0;transform:translateY(24px);transition:opacity .8s .9s,transform 1s var(--ease) .9s}
+    .ready.st-teams .calmock{opacity:1;transform:none}
+    .st-teams .hero > :not(.calmock):not(.cue):not(.bgnum){position:relative;z-index:1}
+  }
+  [data-theme="dark"] .st-teams .calmock{background:#1b1c26}
+  .cm-head{display:flex;align-items:center;justify-content:space-between;margin-bottom:10px;font:700 13px var(--head)}
+  .cm-head span{display:inline-flex;align-items:center;gap:6px;font:600 11.5px Inter,sans-serif;color:var(--muted)}
+  .cm-head i{width:8px;height:8px;border-radius:50%;background:#13a10e;box-shadow:0 0 0 2px color-mix(in srgb,#13a10e 25%,transparent)}
+  .cm-grid{display:grid;grid-template-columns:repeat(5,minmax(0,1fr));gap:6px;position:relative}
+  .cm-day{display:flex;flex-direction:column;gap:5px}
+  .cm-day b{font:600 11px Inter,sans-serif;color:var(--muted);text-align:center;padding-bottom:4px}
+  .cm-day b em{display:block;width:26px;height:26px;line-height:26px;margin:2px auto 0;border-radius:50%;font:700 15px var(--head);color:var(--ink);font-style:normal}
+  .cm-day.today b em{background:var(--accent);color:#fff}
+  .ev{border-radius:5px;border-left:3px solid var(--accent);background:color-mix(in srgb,var(--accent) 16%,transparent);
+    font:600 10.5px Inter,sans-serif;color:var(--ink);padding:5px 6px;line-height:1.2;overflow:hidden;white-space:nowrap;text-overflow:ellipsis;
+    opacity:0;transform:scale(.85);transform-origin:0 0;transition:opacity .4s,transform .5s var(--ease)}
+  .ev.lg{min-height:44px}.ev.md{min-height:30px}
+  .ev.alt{border-left-color:#7b83eb;background:color-mix(in srgb,#7b83eb 18%,transparent)}
+  .ev.free{border:1px dashed var(--line);background:transparent;color:var(--muted);font-weight:500}
+  .ready .ev{opacity:1;transform:none}
+  .cm-now{position:absolute;left:0;right:0;height:2px;background:#c4314b;top:46%;opacity:0;transition:opacity .5s 2.2s}
+  .cm-now::before{content:"";position:absolute;left:-4px;top:-3px;width:8px;height:8px;border-radius:50%;background:#c4314b}
+  .ready .cm-now{opacity:1}
+
+  .st-teams .marquee{background:var(--accent);border-color:transparent}
+  .st-teams .marquee span,.st-teams .marquee span em{color:#fff}
+  [data-theme="dark"] .st-teams .marquee span,[data-theme="dark"] .st-teams .marquee span em{color:#14152b}
+
+  .st-teams .bign b{-webkit-text-stroke:0}
+  .st-teams .k-bar i{height:6px;border-radius:3px}
+
+  .st-teams .reto{background:linear-gradient(135deg,#2b2c6b 0%,#464eb8 100%);color:#fff}
+  .st-teams .reto small,.st-teams .reto p{color:#fff}
+  .st-teams .reto .agenda{background:#fff;color:#2b2c6b;border-color:#fff;border-radius:8px}
+  .st-teams .reto .agenda:hover{background:#e8ebfa;color:#2b2c6b}
+  .st-teams .magnet{background:#fff;color:#2b2c6b}
+  .st-teams .mini{background:rgba(255,255,255,.08);border-color:rgba(255,255,255,.22);border-radius:10px}
+  .st-teams .mini .box{border-color:rgba(255,255,255,.6);color:#fff}
+  .st-teams .mini li+li{border-color:rgba(255,255,255,.14)}
+  .st-teams .mini .f{border-radius:6px}
+  .st-teams .mini li.ok .box{background:#13a10e;border-color:#13a10e}
+  .mini .f.t-ok{color:#9ff59a;background:rgba(19,161,14,.28)}
+  .mini .f.t-warn{color:#ffe08a;background:rgba(193,156,0,.3)}
+  .mini .f.t-pend{color:#e6e7f5;background:rgba(255,255,255,.14)}
+
   /* Mini checklist de ejemplo junto al texto del reto */
   .reto-body{display:flex;flex-wrap:wrap;align-items:center;gap:22px 34px}
   .mini{list-style:none;flex:0 0 auto;width:min(100%,290px);border:1px solid color-mix(in srgb,var(--paper) 20%,transparent);
@@ -305,10 +358,35 @@ function teamsLink(reto) {
   ].map(([k, v]) => k + "=" + encodeURIComponent(v)).join("&");
   return "https://teams.microsoft.com/l/meeting/new?" + q;
 }
+/* Calendario semanal decorativo (estilo "teams") */
+function calMock(sem) {
+  const es = lang === "es";
+  const dias = es ? ["Lun", "Mar", "Mié", "Jue", "Vie"] : ["Mon", "Tue", "Wed", "Thu", "Fri"];
+  const n0 = parseInt(sem.fechas, 10) || 16;
+  const ev = es
+    ? [[["Daily", ""], ["Planning", "lg alt"], ["Libre", "free md"]],
+       [["Daily", ""], ["Revisión", "md"], ["1:1", "alt"]],
+       [["Daily", ""], ["Otra área", "lg"], ["Foco", "free"]],
+       [["Daily", ""], ["Refinar", "md alt"], ["Demo", "md"]],
+       [["Daily", ""], ["Retro", "lg alt"], ["Libre", "free"]]]
+    : [[["Daily", ""], ["Planning", "lg alt"], ["Free", "free md"]],
+       [["Daily", ""], ["Review", "md"], ["1:1", "alt"]],
+       [["Daily", ""], ["Sync", "lg"], ["Focus", "free"]],
+       [["Daily", ""], ["Refine", "md alt"], ["Demo", "md"]],
+       [["Daily", ""], ["Retro", "lg alt"], ["Free", "free"]]];
+  const hoy = new Date(Date.now() - 5 * 3600e3).getUTCDay() - 1;   // 0 = lunes (hora de Lima)
+  let k = 0;
+  return `<div class="calmock" aria-hidden="true">
+    <div class="cm-head">${es ? "Tu semana" : "Your week"}<span><i></i>${es ? "Disponible" : "Available"}</span></div>
+    <div class="cm-grid">${dias.map((d, i) => `<div class="cm-day${i === hoy && semana === 0 ? " today" : ""}"><b>${d}<em>${n0 + i}</em></b>
+      ${ev[i].map(([t, c]) => `<div class="ev ${c}" style="transition-delay:${1.2 + (k++) * 0.07}s">${t}</div>`).join("")}</div>`).join("")}
+      <div class="cm-now"></div></div></div>`;
+}
 const words = t => t.split(" ").map(w => `<span class="w"><span>${w}</span></span>`).join(" ");
 
 function render() {
   const s = view(SEMANAS[semana]), d = s.soft, t = s.tech, L = T[lang], ok = retoAceptado(s.numero);
+  document.body.classList.toggle("st-teams", SEMANAS[semana].estilo === "teams");
   const rs = document.documentElement.style, col = SEMANAS[semana].color;
   if (col && col.claro) rs.setProperty("--wk-claro", col.claro); else rs.removeProperty("--wk-claro");
   if (col && col.oscuro) rs.setProperty("--wk-oscuro", col.oscuro); else rs.removeProperty("--wk-oscuro");
@@ -323,6 +401,7 @@ function render() {
   $("#main").innerHTML = `
     <section class="hero pad">
       <div class="bgnum" aria-hidden="true">${s.numero}</div>
+      ${SEMANAS[semana].estilo === "teams" ? calMock(SEMANAS[semana]) : ""}
       <p class="eyebrow">${semana === 0 ? L.now : L.past} · <span class="cat">${d.categoria}</span></p>
       <h1 class="kin">${words(d.titulo)}</h1>
       <div class="help"><small>${L.helps}</small><p>${d.ayuda || ""}</p></div>
@@ -353,7 +432,7 @@ function render() {
           ${d.reto.lista ? `<ul class="mini" aria-label="Ejemplo">${d.reto.lista.map((x, i) => `
             <li class="${x.hecho ? "ok" : ""}" style="transition-delay:${0.35 + i * 0.12}s">
               <span class="box" aria-hidden="true"><svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="4" stroke-linecap="round" stroke-linejoin="round" style="transition-delay:${0.9 + i * 0.12}s"><path d="M4 12l5 5L20 7"/></svg></span>
-              <span class="t">${x.texto}</span><span class="f">${x.fecha}</span>
+              <span class="t">${x.texto}</span><span class="f${x.tono ? " t-" + x.tono : ""}">${x.fecha}</span>
             </li>`).join("")}</ul>` : ""}
         </div>
         <a class="agenda" href="${d.reto.accion === "calendario" ? "https://teams.microsoft.com/_#/calendarv2" : teamsLink(d.reto)}" target="_blank" rel="noopener" title="${d.reto.accion === "calendario" ? X[lang].calTip : X[lang].agendaTip}" data-ev="${d.reto.accion === "calendario" ? "abrir_calendario_teams" : "agendar_teams"}">
