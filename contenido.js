@@ -12,6 +12,8 @@
      junto al reto, con "texto", "fecha" y "hecho" (true/false).
    - "publicar" es opcional: la fecha (AAAA-MM-DD) en que la semana aparece.
      Antes de esa fecha solo se ve con el enlace de vista previa (?previa).
+   - "reto.accion" es opcional: "calendario" muestra un botón que abre el
+     calendario de Teams; si falta, el botón crea un bloque de 15 min.
    - "color" es opcional: el color de la semana, uno para modo
      claro y otro para modo oscuro. Si falta, se usa el verde.
    ========================================================= */
@@ -32,7 +34,7 @@ const SEMANAS = [
         { titulo: "Que tu voz se escuche", texto: "Habla fuerte y claro, y ve al punto." },
         { titulo: "Ninguna invitación sin respuesta", texto: "No negociable: acepta, rechaza o avisa si llegas tarde. Es el tiempo de otra persona y el tuyo." }
       ],
-      reto: { titulo: "Agenda al día", texto: "Hoy, responde todas tus invitaciones pendientes y revisa las reuniones de mañana: ¿sabes para qué es cada una?",
+      reto: { titulo: "Agenda al día", accion: "calendario", texto: "Ve a Teams y revisa tu calendario: responde las invitaciones pendientes y confirma para qué es cada reunión de hoy y mañana.",
         lista: [
           { texto: "Reunión de equipo", fecha: "Aceptada", hecho: true },
           { texto: "Sesión de planificación", fecha: "Aceptada", hecho: true },
@@ -53,7 +55,7 @@ const SEMANAS = [
           { titulo: "Make your voice heard", texto: "Speak loud and clear, and get to the point." },
           { titulo: "No invite left unanswered", texto: "Non-negotiable: accept, decline, or say if you'll be late. It's someone else's time, and yours." }
         ],
-        reto: { titulo: "Calendar up to date", texto: "Today, answer all your pending invites and review tomorrow's meetings: do you know what each one is for?",
+        reto: { titulo: "Calendar up to date", accion: "calendario", texto: "Go to Teams and check your calendar: answer pending invites and confirm what each of today's and tomorrow's meetings is for.",
           lista: [
             { texto: "Team meeting", fecha: "Accepted", hecho: true },
             { texto: "Planning session", fecha: "Accepted", hecho: true },

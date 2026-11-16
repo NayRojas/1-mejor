@@ -281,8 +281,8 @@ const FINE = matchMedia("(hover:hover)").matches;
 let semana = 0, lang = "es";
 try { if (localStorage.getItem("pulso-lang") === "en") lang = "en"; } catch (e) {}
 const view = s => (lang === "en" && s.en) ? { ...s, ...s.en } : s;
-const X = { es: { scroll: "Desliza", back: "Ver versión clásica", scrollK: "Desliza ↓", open: "Abrir →", toNight: "Cambiar a modo noche", toDay: "Cambiar a modo día", agenda: "Resérvate 15 min para esto", agendaTip: "Abre Teams con un bloque de 15 minutos en tu calendario, listo para guardar" },
-            en: { scroll: "Scroll", back: "See classic version", scrollK: "Scroll ↓", open: "Open →", toNight: "Switch to night mode", toDay: "Switch to day mode", agenda: "Save 15 min for this", agendaTip: "Opens Teams with a 15-minute block in your calendar, ready to save" } };
+const X = { es: { scroll: "Desliza", back: "Ver versión clásica", scrollK: "Desliza ↓", open: "Abrir →", toNight: "Cambiar a modo noche", toDay: "Cambiar a modo día", agenda: "Resérvate 15 min para esto", agendaTip: "Abre Teams con un bloque de 15 minutos en tu calendario, listo para guardar", cal: "Abre tu calendario en Teams", calTip: "Abre el calendario de Teams en una pestaña nueva" },
+            en: { scroll: "Scroll", back: "See classic version", scrollK: "Scroll ↓", open: "Open →", toNight: "Switch to night mode", toDay: "Switch to day mode", agenda: "Save 15 min for this", agendaTip: "Opens Teams with a 15-minute block in your calendar, ready to save", cal: "Open your Teams calendar", calTip: "Opens your Teams calendar in a new tab" } };
 const retoAceptado = n => { try { return localStorage.getItem("pulso-reto-" + n) === "1"; } catch (e) { return false; } };
 /* Enlace que abre Teams con una reunión de 15 min lista para guardar (bloque personal, sin invitados).
    Horario: el siguiente día hábil a las 9:00, hora de Lima (UTC-5, sin horario de verano). */
@@ -351,9 +351,9 @@ function render() {
               <span class="t">${x.texto}</span><span class="f">${x.fecha}</span>
             </li>`).join("")}</ul>` : ""}
         </div>
-        <a class="agenda" href="${teamsLink(d.reto)}" target="_blank" rel="noopener" title="${X[lang].agendaTip}">
+        <a class="agenda" href="${d.reto.accion === "calendario" ? "https://teams.microsoft.com/_#/calendarv2" : teamsLink(d.reto)}" target="_blank" rel="noopener" title="${d.reto.accion === "calendario" ? X[lang].calTip : X[lang].agendaTip}" data-ev="${d.reto.accion === "calendario" ? "abrir_calendario_teams" : "agendar_teams"}">
           <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="4" width="18" height="17" rx="2"/><path d="M8 2v4M16 2v4M3 10h18M12 14v4M10 16h4"/></svg>
-          ${X[lang].agenda}
+          ${d.reto.accion === "calendario" ? X[lang].cal : X[lang].agenda}
         </a>
       </div>
       <button class="magnet${ok ? " done" : ""}" type="button">${ok ? L.accepted : L.accept}</button>
@@ -369,7 +369,7 @@ function render() {
 
   // Botón del reto
   document.querySelectorAll("#main a.cta").forEach(a => a.addEventListener("click", () => track("abrir_enlace")));
-  document.querySelectorAll("#main a.agenda").forEach(a => a.addEventListener("click", () => track("agendar_teams")));
+  document.querySelectorAll("#main a.agenda").forEach(a => a.addEventListener("click", () => track(a.dataset.ev)));
   const btn = $(".magnet");
   btn.onclick = () => {
     track("reto_aceptado");
