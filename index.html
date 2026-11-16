@@ -109,6 +109,8 @@
   @keyframes eq{0%,100%{height:5px}50%{height:20px}}
   .play .pb{position:relative;width:90px;height:3px;border-radius:3px;background:var(--line);overflow:hidden}
   .play .pb::after{content:"";position:absolute;inset:0;background:var(--accent);transform-origin:0 50%;transform:scaleX(var(--p,0));transition:transform .3s}
+  .play .tt{font:600 13px Inter,sans-serif;font-variant-numeric:tabular-nums;color:var(--muted);min-width:34px;text-align:right}
+  .play.on .tt{color:var(--ink)}
   @media (max-width:560px){.play .pb{display:none}}
   html.a11y-calm .play{opacity:1!important;transform:none!important}
   .help small{font-size:12px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:var(--muted)}
@@ -492,6 +494,7 @@ function render() {
         <span class="pt"><b></b><small></small></span>
         <span class="eq" aria-hidden="true"><i></i><i></i><i></i><i></i><i></i></span>
         <span class="pb" aria-hidden="true"></span>
+        <span class="tt" aria-label="Duración"></span>
       </button>` : ""}
       ${semana === 0 ? "" : `<p class="past">${L.pastNote}</p>`}
       <div class="cue"><i></i>${X[lang].scroll} · ${L.keys(n)} · ${L.read}</div>
@@ -682,12 +685,13 @@ function labelA11y() {
   });
   const pb = $("#playBtn");
   if (pb) {
-    const P = { es: ["Escúchalo", "En lugar de leer · 1 min", "Escuchando…", "Toca para detener"],
-                en: ["Listen", "Instead of reading · 1 min", "Listening…", "Tap to stop"] }[lang];
+    const P = { es: ["Escúchalo", "En lugar de leer", "Escuchando…", "Toca para detener"],
+                en: ["Listen", "Instead of reading", "Listening…", "Tap to stop"] }[lang];
     pb.classList.toggle("on", speaking); pb.setAttribute("aria-pressed", speaking);
     pb.querySelector("b").textContent = speaking ? P[2] : P[0];
     pb.querySelector("small").textContent = speaking ? P[3] : P[1];
-    if (!speaking) pb.style.setProperty("--p", 0);
+    if (!speaking) { pb.style.setProperty("--p", 0); total = 0; }
+    pintaTiempo();
   }
 }
 let speaking = false;
@@ -713,17 +717,37 @@ function mejorVoz(l) {
   return vs.sort((a, b) => score(b) - score(a))[0];
 }
 if (canSpeak) { speechSynthesis.getVoices(); speechSynthesis.onvoiceschanged = () => speechSynthesis.getVoices(); }
-function stopSpeak() { if (canSpeak) speechSynthesis.cancel(); speaking = false; labelA11y(); }
-function speak() {
+function stopSpeak() { if (canSpeak) speechSynthesis.cancel(); speaking = false; clearInterval(reloj); labelA11y(); }
+function textoAudio() {
   const s = view(SEMANAS[semana]), d = s.soft, L = T[lang];
-  const txt = [`${d.categoria}. ${d.titulo}.`, `${L.helps}: ${d.ayuda || ""}`,
+  return [`${d.categoria}. ${d.titulo}.`, `${L.helps}: ${d.ayuda || ""}`,
     ...d.tips.map((x, i) => `${i + 1}. ${x.titulo}. ${x.texto}`), `${L.reto}: ${d.reto.titulo}. ${d.reto.texto}`].join(" ");
+}
+/* Duración estimada: ~14 caracteres por segundo en español y ~15 en inglés a velocidad 0,95 */
+const durEstimada = t => Math.round(t.length / (lang === "es" ? 14 : 15));
+const mmss = n => `${Math.floor(n / 60)}:${String(Math.max(0, Math.round(n % 60))).padStart(2, "0")}`;
+let t0 = 0, total = 0, reloj = null;
+function pintaTiempo() {
+  const pb = $("#playBtn"); if (!pb) return;
+  const el = speaking ? Math.min((performance.now() - t0) / 1000, total) : 0;
+  const tt = pb.querySelector(".tt"); if (tt) tt.textContent = speaking ? `${mmss(el)} / ${mmss(total)}` : mmss(total || durEstimada(textoAudio()));
+}
+function speak() {
+  const txt = textoAudio();
   const u = new SpeechSynthesisUtterance(txt);
   u.lang = lang === "es" ? "es-419" : "en-US"; u.rate = .95;
   try { const v = mejorVoz(lang); if (v) { u.voice = v; u.lang = v.lang; } } catch (e) {}
-  u.onend = u.onerror = () => { speaking = false; labelA11y(); };
-  u.onboundary = e => { const pb = $("#playBtn"); if (pb && e.charIndex != null) pb.style.setProperty("--p", Math.min(1, e.charIndex / txt.length)); };
-  speechSynthesis.cancel(); speechSynthesis.speak(u); speaking = true; labelA11y();
+  total = durEstimada(txt);
+  u.onend = u.onerror = () => { speaking = false; clearInterval(reloj); labelA11y(); };
+  u.onboundary = e => {
+    const pb = $("#playBtn"); if (!pb || e.charIndex == null || !e.charIndex) return;
+    const f = Math.min(1, e.charIndex / txt.length); pb.style.setProperty("--p", f);
+    const el = (performance.now() - t0) / 1000;
+    if (f > .08) total = Math.max(Math.round(el / f), Math.ceil(el));  // ajusta la duración con el ritmo real de la voz
+  };
+  speechSynthesis.cancel(); speechSynthesis.speak(u); speaking = true; t0 = performance.now();
+  clearInterval(reloj); reloj = setInterval(pintaTiempo, 250);
+  labelA11y();
 }
 a11yBtn.onclick = e => {
   e.stopPropagation();
