@@ -19,6 +19,55 @@
    ========================================================= */
 const SEMANAS = [
   {
+    numero: 48,
+    fechas: "23 – 27 nov",
+    publicar: "2026-11-23",
+    color: { claro: "#0e7490", oscuro: "#5eead4" },   // turquesa: claridad y criterio
+    soft: {
+      categoria: "Criterio con IA",
+      titulo: "La IA propone, tú decides",
+      ayuda: "Usar la IA para avanzar más rápido sin dejar de pensar por ti.",
+      tips: [
+        { titulo: "Piensa antes de preguntar", texto: "Escribe tu propia idea primero y luego compárala con la de la IA." },
+        { titulo: "Pide el porqué, no solo la respuesta", texto: "Pregúntale qué supuso, qué alternativas descartó y qué podría fallar." },
+        { titulo: "Verifica lo que importa", texto: "Datos, versiones, librerías y comandos: confírmalos en la fuente o pruébalos." },
+        { titulo: "Revisa su código como si fuera de otro", texto: "Léelo, entiéndelo y corre las pruebas antes de hacer merge. Si no lo puedes explicar, no lo subas." },
+        { titulo: "Cuida lo que compartes", texto: "Nunca pegues datos de clientes, credenciales ni código sensible en herramientas no aprobadas." }
+      ],
+      fuente: "Estudio de Microsoft Research sobre IA y pensamiento crítico (CHI 2025)",
+      reto: { titulo: "Desafía una respuesta", texto: "Esta semana, cuando la IA te dé una respuesta importante, pídele que la critique y encuentra un supuesto o error que no habías visto.",
+        lista: [
+          { texto: "Escribí mi idea primero", fecha: "Antes", hecho: true },
+          { texto: "Pedí supuestos y riesgos", fecha: "Durante", hecho: true },
+          { texto: "Verifiqué en la fuente", fecha: "Después", hecho: true },
+          { texto: "Probé el código", fecha: "Después" }
+        ] }
+    },
+    en: {
+      fechas: "Nov 23 – 27",
+      soft: {
+        categoria: "Judgment with AI",
+        titulo: "AI suggests, you decide",
+        ayuda: "Use AI to move faster without letting it think for you.",
+        tips: [
+          { titulo: "Think before you ask", texto: "Write down your own idea first, then compare it with the AI's." },
+          { titulo: "Ask why, not just what", texto: "Ask what it assumed, which alternatives it dropped, and what could fail." },
+          { titulo: "Verify what matters", texto: "Data, versions, libraries and commands: confirm them at the source or test them." },
+          { titulo: "Review its code like someone else's", texto: "Read it, understand it and run the tests before merging. If you can't explain it, don't ship it." },
+          { titulo: "Mind what you share", texto: "Never paste customer data, credentials or sensitive code into unapproved tools." }
+        ],
+        fuente: "Microsoft Research study on AI and critical thinking (CHI 2025)",
+        reto: { titulo: "Challenge one answer", texto: "This week, when AI gives you an important answer, ask it to critique itself and find an assumption or error you hadn't seen.",
+          lista: [
+            { texto: "Wrote my idea first", fecha: "Before", hecho: true },
+            { texto: "Asked for assumptions and risks", fecha: "During", hecho: true },
+            { texto: "Checked the source", fecha: "After", hecho: true },
+            { texto: "Tested the code", fecha: "After" }
+          ] }
+      }
+    }
+  },
+  {
     numero: 47,
     fechas: "16 – 20 nov",
     publicar: "2026-11-16",                            // aparece sola ese día (hora de Lima)
