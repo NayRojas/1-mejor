@@ -26,26 +26,26 @@ const SEMANAS = [
     soft: {
       categoria: "Criterio con IA",
       titulo: "Cuida tu criterio al usar IA",
-      ayuda: "Usar la IA sin perder la capacidad de evaluar lo que te entrega.",
+      ayuda: "Aprovechar la IA en todo lo que haces sin dejar de lado tu juicio.",
       tips: [
-        { dato: "29%", titulo: "Verifica antes de usar", texto: "Solo el 29% de los desarrolladores confía en la precisión de la IA. Contrasta datos, versiones y comandos con la fuente.", fuente: "Stack Overflow Developer Survey 2025" },
-        { dato: "66%", titulo: "Revisa el código generado", texto: "El 66% dedica más tiempo a corregir código \u00abcasi correcto\u00bb. Léelo y pruébalo antes del merge.", fuente: "Stack Overflow Developer Survey 2025" },
-        { dato: "45%", titulo: "Pásalo por revisión de seguridad", texto: "En el 45% de las tareas evaluadas, el código generado por IA introdujo vulnerabilidades.", fuente: "Veracode, GenAI Code Security Report 2025" }
+        { dato: "66%", titulo: "Verifica antes de usar", texto: "El 66% de los trabajadores usa lo que entrega la IA sin comprobar si es correcto. Contrasta datos, cifras y referencias con la fuente.", fuente: "KPMG y Universidad de Melbourne, 2025 (48.000 personas, 47 países)" },
+        { dato: "56%", titulo: "Revisa todo lo que generes", texto: "El 56% ha cometido errores en su trabajo por usar IA. Correos, documentos, análisis o código: léelos completos antes de enviarlos.", fuente: "KPMG y Universidad de Melbourne, 2025" },
+        { dato: "45%", titulo: "La decisión final es tuya", texto: "El 45% de las respuestas de asistentes de IA sobre noticias tuvo al menos un error importante. Úsala como punto de partida: el contexto, el juicio y la responsabilidad son tuyos.", fuente: "Estudio de la UER y la BBC sobre asistentes de IA, 2025" }
       ],
-      reto: { titulo: "Verifica un dato", texto: "Antes de usar una respuesta de la IA esta semana, verifica uno de sus datos en la fuente original." }
+      reto: { titulo: "Revisa antes de enviar", texto: "Esta semana, antes de enviar algo hecho con IA (un correo, un resumen o un código), revísalo completo y mejora al menos un detalle con tu criterio." }
     },
     en: {
       fechas: "Nov 23 – 27",
       soft: {
         categoria: "Judgment with AI",
         titulo: "Protect your judgment when using AI",
-        ayuda: "Use AI without losing the ability to evaluate what it gives you.",
+        ayuda: "Make the most of AI in everything you do without setting your judgment aside.",
         tips: [
-          { dato: "29%", titulo: "Verify before you use it", texto: "Only 29% of developers trust the accuracy of AI. Check data, versions and commands against the source.", fuente: "Stack Overflow Developer Survey 2025" },
-          { dato: "66%", titulo: "Review generated code", texto: "66% spend more time fixing \u201calmost right\u201d code. Read it and test it before merging.", fuente: "Stack Overflow Developer Survey 2025" },
-          { dato: "45%", titulo: "Run it through a security review", texto: "In 45% of the tasks evaluated, AI-generated code introduced vulnerabilities.", fuente: "Veracode, GenAI Code Security Report 2025" }
+          { dato: "66%", titulo: "Verify before you use it", texto: "66% of workers use AI output without checking whether it's accurate. Check data, figures and references against the source.", fuente: "KPMG and University of Melbourne, 2025 (48,000 people, 47 countries)" },
+          { dato: "56%", titulo: "Review everything you generate", texto: "56% have made mistakes in their work because of AI. Emails, documents, analyses or code: read them in full before sending.", fuente: "KPMG and University of Melbourne, 2025" },
+          { dato: "45%", titulo: "The final call is yours", texto: "45% of AI assistant answers about the news had at least one significant issue. Use it as a starting point: context, judgment and accountability are yours.", fuente: "EBU and BBC study on AI assistants, 2025" }
         ],
-        reto: { titulo: "Verify one fact", texto: "Before using an AI answer this week, check one of its facts against the original source." }
+        reto: { titulo: "Review before you send", texto: "This week, before you send something made with AI (an email, a summary or code), review it in full and improve at least one detail with your own judgment." }
       }
     }
   },
