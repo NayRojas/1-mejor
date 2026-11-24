@@ -135,6 +135,9 @@
   .keys-sticky{position:sticky;top:0;height:100svh;display:grid;grid-template-columns:5fr 7fr;gap:5vw;align-items:center}
   .k-left{position:relative}
   .k-label{font-size:13px;font-weight:700;letter-spacing:.12em;text-transform:uppercase;color:var(--muted)}
+  .bign.datos b{font-size:clamp(110px,15vw,230px);letter-spacing:-.05em}
+  .ksrc{display:block;margin-top:14px;font-size:13px;color:var(--muted);letter-spacing:.02em}
+  .ksrc::before{content:"— "}
   .bign{position:relative;height:clamp(150px,22vw,300px);margin-top:10px;overflow:hidden}
   .bign b{position:absolute;inset:0;font-family:var(--head);font-weight:800;font-size:clamp(150px,22vw,300px);line-height:1;letter-spacing:-.07em;color:var(--accent);
     transform:translateY(100%);transition:transform .7s var(--ease)}
@@ -479,6 +482,7 @@ function render() {
   const n = d.tips.length;
   const band = `<span>${d.categoria}</span><span><em>${L.week} ${s.numero}</em></span><span>${d.titulo}</span><span><em>${L.read}</em></span>`;
 
+  const conDatos = d.tips.some(x => x.dato);
   $("#main").innerHTML = `
     <section class="hero pad">
       <div class="bgnum" aria-hidden="true">${s.numero}</div>
@@ -497,7 +501,7 @@ function render() {
         <span class="tt" aria-label="Duración"></span>
       </button>` : ""}
       ${semana === 0 ? "" : `<p class="past">${L.pastNote}</p>`}
-      <div class="cue"><i></i>${X[lang].scroll} · ${L.keys(n)} · ${L.read}</div>
+      <div class="cue"><i></i>${X[lang].scroll} · ${conDatos ? (lang === "es" ? `${n} datos` : `${n} facts`) : L.keys(n)} · ${conDatos ? (lang === "es" ? "Lectura: 1 min" : "Read: 1 min") : L.read}</div>
     </section>
 
     <div class="marquee" aria-hidden="true"><div class="track">${band.repeat(4)}${band.repeat(4)}</div></div>
@@ -505,11 +509,11 @@ function render() {
     <section class="keys pad" style="height:${n * 70 + 40}svh">
       <div class="keys-sticky">
         <div class="k-left">
-          <p class="k-label">${L.keys(n)}</p>
-          <div class="bign" aria-hidden="true">${d.tips.map((_, i) => `<b data-i="${i}">0${i + 1}</b>`).join("")}</div>
+          <p class="k-label">${conDatos ? (lang === "es" ? `${n} datos y qué hacer` : `${n} facts and what to do`) : L.keys(n)}</p>
+          <div class="bign${conDatos ? " datos" : ""}" aria-hidden="true">${d.tips.map((x, i) => `<b data-i="${i}">${x.dato || "0" + (i + 1)}</b>`).join("")}</div>
           <div class="k-bar" aria-hidden="true">${d.tips.map(() => "<i></i>").join("")}</div>
         </div>
-        <ol class="k-list">${d.tips.map((x, i) => `<li class="key" data-i="${i}" data-n="0${i + 1}"><h3>${x.titulo}</h3><p>${x.texto}</p></li>`).join("")}</ol>
+        <ol class="k-list">${d.tips.map((x, i) => `<li class="key" data-i="${i}" data-n="${x.dato || "0" + (i + 1)}"><h3>${x.titulo}</h3><p>${x.texto}</p>${x.fuente ? `<small class="ksrc">${x.fuente}</small>` : ""}</li>`).join("")}</ol>
       </div>
     </section>
     ${d.fuente ? `<p class="src pad">${L.inspired} <b>${d.fuente}</b></p>` : ""}
