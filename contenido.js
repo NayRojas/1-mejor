@@ -29,10 +29,10 @@ const SEMANAS = [
       ayuda: "Aprovechar la IA en todo lo que haces sin dejar de lado tu juicio.",
       tips: [
         { dato: "66%", titulo: "Verifica antes de usar", texto: "El 66% de los trabajadores usa lo que entrega la IA sin comprobar si es correcto. Contrasta datos, cifras y referencias con la fuente.", fuente: "KPMG y Universidad de Melbourne, 2025 (48.000 personas, 47 países)" },
-        { dato: "56%", titulo: "Revisa todo lo que generes", texto: "El 56% ha cometido errores en su trabajo por usar IA. Correos, documentos, análisis o código: léelos completos antes de enviarlos.", fuente: "KPMG y Universidad de Melbourne, 2025" },
+        { dato: "56%", titulo: "Revisa todo lo que generes", texto: "El 56% ha cometido errores en su trabajo por usar IA. Correos, informes, presentaciones o análisis: léelos completos antes de compartirlos.", fuente: "KPMG y Universidad de Melbourne, 2025" },
         { dato: "45%", titulo: "La decisión final es tuya", texto: "El 45% de las respuestas de asistentes de IA sobre noticias tuvo al menos un error importante. Úsala como punto de partida: el contexto, el juicio y la responsabilidad son tuyos.", fuente: "Estudio de la UER y la BBC sobre asistentes de IA, 2025" }
       ],
-      reto: { titulo: "Revisa antes de enviar", texto: "Esta semana, antes de enviar algo hecho con IA (un correo, un resumen o un código), revísalo completo y mejora al menos un detalle con tu criterio." }
+      reto: { titulo: "Revisa antes de compartir", texto: "Esta semana, antes de compartir algo hecho con IA (un correo, un resumen, una presentación o una propuesta), revísalo completo y mejora al menos un detalle con tu criterio." }
     },
     en: {
       fechas: "Nov 23 – 27",
@@ -42,10 +42,10 @@ const SEMANAS = [
         ayuda: "Make the most of AI in everything you do without setting your judgment aside.",
         tips: [
           { dato: "66%", titulo: "Verify before you use it", texto: "66% of workers use AI output without checking whether it's accurate. Check data, figures and references against the source.", fuente: "KPMG and University of Melbourne, 2025 (48,000 people, 47 countries)" },
-          { dato: "56%", titulo: "Review everything you generate", texto: "56% have made mistakes in their work because of AI. Emails, documents, analyses or code: read them in full before sending.", fuente: "KPMG and University of Melbourne, 2025" },
+          { dato: "56%", titulo: "Review everything you generate", texto: "56% have made mistakes in their work because of AI. Emails, reports, presentations or analyses: read them in full before sharing.", fuente: "KPMG and University of Melbourne, 2025" },
           { dato: "45%", titulo: "The final call is yours", texto: "45% of AI assistant answers about the news had at least one significant issue. Use it as a starting point: context, judgment and accountability are yours.", fuente: "EBU and BBC study on AI assistants, 2025" }
         ],
-        reto: { titulo: "Review before you send", texto: "This week, before you send something made with AI (an email, a summary or code), review it in full and improve at least one detail with your own judgment." }
+        reto: { titulo: "Review before you share", texto: "This week, before you share something made with AI (an email, a summary, a presentation or a proposal), review it in full and improve at least one detail with your own judgment." }
       }
     }
   },
